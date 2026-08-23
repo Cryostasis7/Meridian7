@@ -1,0 +1,2039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meridian — city wallpaper press</title>
+<style>
+:root{
+  --slate:#141C24;        /* press-room dark */
+  --slate-2:#1C2731;
+  --slate-3:#25333F;
+  --line:#33454F;
+  --paper:#E9E1CF;        /* the poster's own stock */
+  --ink:#DCD4C2;
+  --muted:#8397A3;
+  --coral:#C86A48;        /* pulled from the reference print */
+  --indigo:#3E5F82;
+  --sage:#8AA184;
+  --ok:#7FA98C;
+  --warn:#D8A14B;
+  --r:3px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{
+  background:
+    radial-gradient(1200px 600px at 70% -10%, #21303B 0%, transparent 60%),
+    var(--slate);
+  color:var(--ink);
+  font-family:"Helvetica Neue",Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:14px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{margin:0;font-weight:400}
+button,input,select{font:inherit;color:inherit}
+::selection{background:var(--coral);color:#12181E}
+
+/* ---------- masthead ---------- */
+.masthead{
+  display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+  padding:18px 24px 14px;border-bottom:1px solid var(--line);
+}
+.wordmark{
+  font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  font-size:21px;letter-spacing:.14em;text-transform:uppercase;
+}
+.wordmark b{font-weight:400;color:var(--coral)}
+.tagline{color:var(--muted);font-size:12px;letter-spacing:.06em}
+.masthead .spacer{flex:1}
+.plate-no{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:11px;color:var(--muted);letter-spacing:.08em;
+}
+
+/* ---------- layout ---------- */
+.studio{display:grid;grid-template-columns:352px 1fr;min-height:calc(100% - 58px)}
+.panel{border-right:1px solid var(--line);padding:6px 0 60px;overflow:auto}
+.stage{padding:28px 24px 60px;display:flex;flex-direction:column;align-items:center;gap:18px}
+
+/* ---------- panel sections ---------- */
+.step{border-bottom:1px solid var(--line);padding:18px 24px 22px}
+.step[data-locked="1"]{opacity:.38;pointer-events:none;filter:saturate(.4)}
+.eyebrow{
+  display:flex;align-items:center;gap:9px;margin-bottom:14px;
+  font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);
+}
+.eyebrow i{
+  font-style:normal;font-family:ui-monospace,Menlo,monospace;
+  color:var(--coral);border:1px solid var(--line);border-radius:50%;
+  width:19px;height:19px;display:grid;place-items:center;font-size:10px;
+}
+label.f{display:block;margin:0 0 12px}
+label.f span{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+input[type=text],select{
+  width:100%;background:var(--slate-2);border:1px solid var(--line);
+  border-radius:var(--r);padding:9px 11px;outline:none;
+}
+input[type=text]:focus,select:focus,button:focus-visible{border-color:var(--coral);box-shadow:0 0 0 2px rgba(200,106,72,.22)}
+button:focus-visible{outline:none}
+.row{display:flex;gap:8px}
+.btn{
+  background:var(--coral);border:1px solid var(--coral);color:#15191D;
+  padding:9px 14px;border-radius:var(--r);cursor:pointer;
+  letter-spacing:.09em;text-transform:uppercase;font-size:11px;font-weight:600;
+}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line);font-weight:400}
+.btn.ghost:hover{border-color:var(--muted);background:var(--slate-2)}
+.btn[disabled]{opacity:.4;cursor:not-allowed;filter:none}
+.btn.wide{width:100%;justify-content:center}
+
+/* ---------- results ---------- */
+.note{font-size:12px;color:var(--muted);margin:12px 0 0}
+.note.bad{color:var(--warn)}
+.note.good{color:var(--ok)}
+.results{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:6px;max-height:300px;overflow:auto}
+.results li button{
+  width:100%;text-align:left;background:var(--slate-2);border:1px solid var(--line);
+  border-radius:var(--r);padding:9px 11px;cursor:pointer;display:block;
+}
+.results li button:hover{border-color:var(--muted)}
+.results li button.match{border-color:rgba(127,169,140,.5)}
+.results li button[aria-pressed=true]{border-color:var(--coral);background:#2A2019}
+.r-name{font-size:14px}
+.r-name em{font-style:normal;color:var(--muted)}
+.r-meta{
+  font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px;
+  color:var(--muted);letter-spacing:.02em;margin-top:3px;
+}
+.flagmark{color:var(--coral)}
+
+/* ---------- format cards ---------- */
+.formats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.fmt{
+  background:var(--slate-2);border:1px solid var(--line);border-radius:var(--r);
+  padding:10px 8px;cursor:pointer;text-align:center;
+}
+.fmt:hover{border-color:var(--muted)}
+.fmt[aria-pressed=true]{border-color:var(--coral);background:#2A2019}
+.fmt .glyph{width:100%;display:flex;justify-content:center;margin-bottom:8px}
+.fmt .glyph b{display:block;border:1px solid currentColor;border-radius:2px;color:var(--muted)}
+.fmt[aria-pressed=true] .glyph b{color:var(--coral)}
+.fmt .t{font-size:11px;letter-spacing:.04em}
+.fmt .d{font-family:ui-monospace,Menlo,monospace;font-size:9.5px;color:var(--muted);margin-top:2px}
+
+/* ---------- chips ---------- */
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{
+  background:var(--slate-2);border:1px solid var(--line);border-radius:999px;
+  padding:5px 11px;font-size:11.5px;cursor:pointer;letter-spacing:.02em;
+}
+.chip[aria-pressed=true]{border-color:var(--coral);color:#F0C6B2;background:#2A2019}
+.chip:hover{border-color:var(--muted)}
+.seg{display:flex;border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.seg button{flex:1;background:var(--slate-2);border:0;border-right:1px solid var(--line);padding:8px 4px;cursor:pointer;font-size:11px;letter-spacing:.05em}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed=true]{background:var(--coral);color:#15191D;font-weight:600}
+.toggle{display:flex;align-items:center;gap:9px;margin-top:12px;cursor:pointer;font-size:12.5px}
+.toggle input{appearance:none;width:34px;height:19px;border-radius:999px;background:var(--slate-3);border:1px solid var(--line);position:relative;cursor:pointer;flex:none}
+.toggle input::after{content:"";position:absolute;top:2px;left:2px;width:13px;height:13px;border-radius:50%;background:var(--muted);transition:.16s}
+.toggle input:checked{background:#3B2A20;border-color:var(--coral)}
+.toggle input:checked::after{left:17px;background:var(--coral)}
+.sub{font-size:11.5px;color:var(--muted);margin:-6px 0 12px}
+textarea{width:100%;margin-top:8px;background:var(--slate-2);border:1px solid var(--line);border-radius:var(--r);padding:9px 11px;color:var(--ink);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px;resize:vertical;outline:none}
+textarea:focus{border-color:var(--coral)}
+
+/* ---------- stage ---------- */
+.plate{
+  background:#0F161C;border:1px solid var(--line);border-radius:4px;
+  padding:16px;box-shadow:0 30px 70px -30px #000;
+  max-width:min(430px,84vw);
+}
+.plate svg{display:block;width:100%;height:auto;border-radius:1px}
+.empty{
+  display:grid;place-items:center;text-align:center;color:var(--muted);
+  border:1px dashed var(--line);border-radius:4px;padding:64px 34px;max-width:430px;
+}
+.empty p{margin:10px 0 0;font-size:13px;max-width:26ch}
+.empty .big{font-family:"Iowan Old Style",Georgia,serif;font-size:19px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
+.filestrip{
+  width:min(560px,92vw);border:1px solid var(--line);border-radius:var(--r);
+  background:var(--slate-2);padding:11px 13px;
+}
+.filestrip .k{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.filestrip .v{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:12px;
+  margin-top:5px;word-break:break-all;color:#EFE7D5;
+}
+.exports{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.stage-note{font-size:11.5px;color:var(--muted);text-align:center;max-width:46ch}
+.spin{display:inline-block;width:11px;height:11px;border:2px solid var(--line);border-top-color:var(--coral);border-radius:50%;animation:sp .7s linear infinite;vertical-align:-1px;margin-right:7px}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation-duration:2.4s}*{transition:none!important}}
+@media (max-width:860px){
+  .studio{grid-template-columns:1fr}
+  .panel{border-right:0;border-bottom:1px solid var(--line);order:2}
+  .stage{order:1;padding:20px 16px 30px}
+}
+</style>
+</head>
+<body>
+<header class="masthead">
+  <h1 class="wordmark">Meri<b>d</b>ian</h1>
+  <span class="tagline">City wallpapers, printed to coordinates</span>
+  <span class="spacer"></span>
+  <span class="plate-no" id="plateNo">PLATE — / —</span>
+</header>
+
+<main class="studio">
+  <aside class="panel">
+
+    <section class="step" id="step1">
+      <div class="eyebrow"><i>1</i> Place</div>
+      <label class="f"><span>City</span>
+        <input type="text" id="cityIn" placeholder="Kyoto" autocomplete="off" spellcheck="false" list="gazList"></label>
+      <datalist id="gazList"></datalist>
+      <label class="f"><span>Country you expect (optional)</span>
+        <input type="text" id="countryIn" placeholder="Japan" autocomplete="off" spellcheck="false"></label>
+      <div class="row">
+        <button class="btn wide" id="findBtn">Find city</button>
+      </div>
+      <p class="note" id="findNote"></p>
+      <ul class="results" id="results"></ul>
+      <button class="btn ghost wide" id="manualToggle" style="margin-top:12px">Enter coordinates by hand</button>
+      <div id="manualBox" hidden style="margin-top:12px">
+        <div class="row">
+          <label class="f" style="flex:1"><span>Latitude</span><input type="text" id="latIn" placeholder="35.0116" inputmode="decimal"></label>
+          <label class="f" style="flex:1"><span>Longitude</span><input type="text" id="lonIn" placeholder="135.7681" inputmode="decimal"></label>
+        </div>
+        <button class="btn wide" id="manualUse">Use this location</button>
+        <p class="sub" style="margin:10px 0 0">Takes the city and country names from the fields above.</p>
+      </div>
+    </section>
+
+    <section class="step" id="step2" data-locked="1">
+      <div class="eyebrow"><i>2</i> Format</div>
+      <div class="formats" id="formats"></div>
+      <label class="f" style="margin-top:12px"><span>Exact device</span>
+        <select id="deviceSel"></select></label>
+    </section>
+
+    <section class="step" id="step3" data-locked="1">
+      <div class="eyebrow"><i>3</i> Landmarks</div>
+      <p class="sub" id="lmSub">Pick up to three. They're drawn as silhouettes, not photographs.</p>
+      <div class="chips" id="lmChips"></div>
+    </section>
+
+    <section class="step" id="step4" data-locked="1">
+      <div class="eyebrow"><i>4</i> Street map</div>
+      <div class="seg" id="mapSeg">
+        <button data-v="off" aria-pressed="true">Off</button>
+        <button data-v="behind">Behind art</button>
+        <button data-v="only">Map only</button>
+      </div>
+      <p class="sub" style="margin-top:10px" id="mapSub">Real streets and rail lines, drawn from OpenStreetMap.</p>
+      <label class="f" id="radiusWrap" hidden><span>Area covered</span>
+        <select id="radiusSel">
+          <option value="2">2 km — neighbourhood</option>
+          <option value="4" selected>4 km — city centre</option>
+          <option value="7">7 km — whole city</option>
+          <option value="12">12 km — city + outskirts</option>
+        </select></label>
+      <p class="note" id="mapNote"></p>
+      <div id="offlineMap" hidden>
+        <button class="btn ghost wide" id="qBtn" style="margin-top:10px">Show the Overpass query</button>
+        <textarea id="qBox" readonly hidden rows="5"></textarea>
+        <button class="btn ghost wide" id="fileBtn" style="margin-top:8px">Load map data from a file</button>
+        <input type="file" id="mapFile" accept=".json,.geojson,application/json,application/geo+json" hidden>
+        <p class="sub" style="margin-top:10px">Run that query at overpass-turbo.eu, export as GeoJSON or raw JSON, then load the file here. Works with no connection.</p>
+      </div>
+    </section>
+
+    <section class="step" id="step5" data-locked="1">
+      <div class="eyebrow"><i>5</i> Print</div>
+      <label class="toggle"><input type="checkbox" id="optCoords" checked> Print coordinates under the title</label>
+      <label class="toggle"><input type="checkbox" id="optGrain" checked> Paper grain</label>
+      <label class="toggle"><input type="checkbox" id="optAscii"> Plain-text filename (no ° ′ ″)</label>
+      <div class="row" style="margin-top:16px">
+        <button class="btn ghost wide" id="reseedBtn">Reshuffle composition</button>
+      </div>
+    </section>
+
+  </aside>
+
+  <section class="stage">
+    <div id="stageBody" class="empty">
+      <div class="big">No plate loaded</div>
+      <p>Name a city and Meridian will set the type, draw its landmarks and pull its streets.</p>
+    </div>
+    <div class="filestrip" id="fileStrip" hidden>
+      <div class="k">Saves as</div>
+      <div class="v" id="fileName">—</div>
+    </div>
+    <div class="exports" id="exports" hidden>
+      <button class="btn" id="pngBtn">Download PNG</button>
+      <button class="btn ghost" id="svgBtn">Download SVG</button>
+    </div>
+    <p class="stage-note" id="stageNote"></p>
+  </section>
+</main>
+
+<script>
+"use strict";
+/* ============================================================
+   MERIDIAN — procedural city wallpaper press
+   Single file. No build step, no dependencies.
+   ============================================================ */
+
+/* ---------- tiny utils ---------- */
+const $ = (id) => document.getElementById(id);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const esc = (s) => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+function seedFrom(str) {
+  let h = 2166136261;
+  for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return h >>> 0;
+}
+function rngFrom(seed) {
+  let a = seed >>> 0;
+  return function () {
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    let t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+const pick = (r, arr) => arr[Math.floor(r() * arr.length) % arr.length];
+const between = (r, a, b) => a + r() * (b - a);
+
+/* ---------- coordinates ---------- */
+function toDMS(value, isLat, ascii) {
+  const dir = value < 0 ? (isLat ? 'S' : 'W') : (isLat ? 'N' : 'E');
+  let v = Math.abs(value);
+  let d = Math.floor(v);
+  let mf = (v - d) * 60;
+  let m = Math.floor(mf);
+  let s = Math.round((mf - m) * 60);
+  if (s === 60) { s = 0; m++; }
+  if (m === 60) { m = 0; d++; }
+  const p2 = (n) => String(n).padStart(2, '0');
+  return ascii
+    ? `${d}-${p2(m)}-${p2(s)}${dir}`
+    : `${d}\u00B0${p2(m)}\u2032${p2(s)}\u2033${dir}`;
+}
+const coordLine = (lat, lon, ascii) => `${toDMS(lat, true, ascii)} ${toDMS(lon, false, ascii)}`;
+
+/* ---------- svg primitives ---------- */
+const n = (v) => (Math.round(v * 100) / 100);
+const rect = (x, y, w, h, f, extra = '') => `<rect x="${n(x)}" y="${n(y)}" width="${n(Math.max(0, w))}" height="${n(Math.max(0, h))}" fill="${f}" ${extra}/>`;
+const circ = (cx, cy, r, f, extra = '') => `<circle cx="${n(cx)}" cy="${n(cy)}" r="${n(Math.max(0, r))}" fill="${f}" ${extra}/>`;
+const ell = (cx, cy, rx, ry, f, extra = '') => `<ellipse cx="${n(cx)}" cy="${n(cy)}" rx="${n(rx)}" ry="${n(ry)}" fill="${f}" ${extra}/>`;
+const path = (d, f, extra = '') => `<path d="${d}" fill="${f}" ${extra}/>`;
+const line = (x1, y1, x2, y2, stroke, w, extra = '') => `<line x1="${n(x1)}" y1="${n(y1)}" x2="${n(x2)}" y2="${n(y2)}" stroke="${stroke}" stroke-width="${n(w)}" ${extra}/>`;
+const tri = (x1, y1, x2, y2, x3, y3, f, extra = '') => path(`M${n(x1)} ${n(y1)}L${n(x2)} ${n(y2)}L${n(x3)} ${n(y3)}Z`, f, extra);
+
+/* pitched / hipped roof with upturned eaves — the East-Asian signature curve */
+function sweepRoof(cx, cy, w, rh, col, curl) {
+  const c = curl === undefined ? 1 : curl;
+  const hw = w / 2, up = rh * 0.30 * c;
+  return path(
+    `M${n(cx - hw)} ${n(cy - up)}` +
+    `C${n(cx - hw * 0.62)} ${n(cy - rh * 0.30)} ${n(cx - hw * 0.30)} ${n(cy - rh * 0.86)} ${n(cx)} ${n(cy - rh)}` +
+    `C${n(cx + hw * 0.30)} ${n(cy - rh * 0.86)} ${n(cx + hw * 0.62)} ${n(cy - rh * 0.30)} ${n(cx + hw)} ${n(cy - up)}` +
+    `C${n(cx + hw * 0.88)} ${n(cy + rh * 0.10)} ${n(cx + hw * 0.62)} ${n(cy + rh * 0.14)} ${n(cx + hw * 0.42)} ${n(cy + rh * 0.06)}` +
+    `L${n(cx - hw * 0.42)} ${n(cy + rh * 0.06)}` +
+    `C${n(cx - hw * 0.62)} ${n(cy + rh * 0.14)} ${n(cx - hw * 0.88)} ${n(cy + rh * 0.10)} ${n(cx - hw)} ${n(cy - up)}Z`, col);
+}
+/* rounded-top arch — the recurring geometric motif in the reference plate */
+function archShape(x, y, w, h, f, extra = '') {
+  const r = w / 2;
+  return path(`M${n(x)} ${n(y + h)}L${n(x)} ${n(y + r)}A${n(r)} ${n(r)} 0 0 1 ${n(x + w)} ${n(y + r)}L${n(x + w)} ${n(y + h)}Z`, f, extra);
+}
+function quarter(x, y, r, f, dir, extra = '') {
+  const d = {
+    ne: `M${n(x)} ${n(y + r)}L${n(x)} ${n(y)}A${n(r)} ${n(r)} 0 0 1 ${n(x + r)} ${n(y + r)}Z`,
+    nw: `M${n(x + r)} ${n(y + r)}L${n(x + r)} ${n(y)}A${n(r)} ${n(r)} 0 0 0 ${n(x)} ${n(y + r)}Z`,
+    se: `M${n(x)} ${n(y)}L${n(x + r)} ${n(y)}A${n(r)} ${n(r)} 0 0 1 ${n(x)} ${n(y + r)}Z`,
+    sw: `M${n(x + r)} ${n(y)}L${n(x)} ${n(y)}A${n(r)} ${n(r)} 0 0 0 ${n(x + r)} ${n(y + r)}Z`
+  }[dir];
+  return path(d, f, extra);
+}
+
+/* ---------- palettes ----------
+   Every palette carries the same structural roles so the composer stays
+   palette-agnostic. Defaults are matched to the reference Kyoto plate. */
+const PALETTES = {
+  eastasia: {
+    paper: '#EAE2D0', ink: '#2C3E56', sun: '#E9A48C',
+    sky: ['#DCD9C8', '#CFD6CE'],
+    mountains: ['#93A9BE', '#6E8CA9', '#4E7191'],
+    shapes: ['#5B7FA6', '#3E5F82', '#C4603F', '#E8B4A2', '#8FA383', '#B5AFA2', '#7B9CB8', '#D9CBB4'],
+    build: ['#EDE7DA', '#DED7C8', '#CFC8B8', '#E6DECE'],
+    roof: '#5F6E79', roofAlt: '#7C8892', wood: '#C05B34', woodDark: '#93401F',
+    leaf: ['#7E9470', '#5F7A5C', '#9AA97F'], bloom: ['#F2C6CB', '#EBB2B8', '#F7DCDD'],
+    stone: '#B9B2A1', water: '#AFC2CD'
+  },
+  euro: {
+    paper: '#EDE6D8', ink: '#31384A', sun: '#E8B27E',
+    sky: ['#E0DBCB', '#D2D5D2'],
+    mountains: ['#A6ADB4', '#7F8A96', '#5C6B7A'],
+    shapes: ['#4C6480', '#2F4459', '#B8623E', '#E3B99A', '#7E8F79', '#B3ABA0', '#8FA5B6', '#DACBB2'],
+    build: ['#EFE9DC', '#E2D9C7', '#D3C9B5', '#EAE1D0'],
+    roof: '#8A5A47', roofAlt: '#6E4C3E', wood: '#A6603C', woodDark: '#7C4326',
+    leaf: ['#78905F', '#5A7150', '#93A472'], bloom: ['#EFD3C4', '#E5BFAE', '#F6E3D6'],
+    stone: '#C4B9A4', water: '#A9BECB'
+  },
+  mediterranean: {
+    paper: '#F0E7D4', ink: '#2F4A5C', sun: '#EFB067',
+    sky: ['#E7DCC4', '#DCDCCE'],
+    mountains: ['#B0AE9B', '#8C927F', '#66756B'],
+    shapes: ['#3F7291', '#2A5A75', '#CE7345', '#F0CBA4', '#8FA57E', '#C0B39A', '#7FA8BC', '#E2D2B4'],
+    build: ['#F4EDDD', '#E9DFC9', '#DACFB6', '#F0E7D2'],
+    roof: '#B4653F', roofAlt: '#95502F', wood: '#C2703F', woodDark: '#8E4A28',
+    leaf: ['#7C9166', '#5D7357', '#A0A87A'], bloom: ['#F3D9BE', '#E9C3A4', '#FAEBD9'],
+    stone: '#D2C4A8', water: '#7FB2C4'
+  },
+  desert: {
+    paper: '#F0E4CE', ink: '#463049', sun: '#EFA06A',
+    sky: ['#EDDCC0', '#E4CFB4'],
+    mountains: ['#CBB093', '#B2937A', '#8E7360'],
+    shapes: ['#7A5C86', '#4E3C64', '#D07B45', '#F0C79B', '#9C9A6C', '#C8B294', '#A88CA8', '#E7D3AE'],
+    build: ['#F5EAD5', '#EBDCC0', '#DCCAAC', '#F2E5CC'],
+    roof: '#B98A5C', roofAlt: '#9A6E48', wood: '#C57A44', woodDark: '#93552C',
+    leaf: ['#8A9A62', '#6E8055', '#A6AE76'], bloom: ['#F3D2B0', '#E7BC95', '#FAE7D2'],
+    stone: '#DCC9A6', water: '#8FBBC0'
+  },
+  tropical: {
+    paper: '#EFE7D2', ink: '#204648', sun: '#F0A57F',
+    sky: ['#E4E1C9', '#D3DFD3'],
+    mountains: ['#95AE9C', '#6E9184', '#4C7166'],
+    shapes: ['#3F8080', '#27585C', '#D2703F', '#F2C7A4', '#79A06B', '#B9B79B', '#7FB1A6', '#E4D6B4'],
+    build: ['#F3ECD9', '#E6DFC7', '#D6CFB4', '#EFE6D0'],
+    roof: '#A8674A', roofAlt: '#7E4C38', wood: '#BE6E42', woodDark: '#8C4A2A',
+    leaf: ['#5E8A55', '#40704B', '#82A05F'], bloom: ['#F2C9B4', '#E7AE9A', '#F9E1D2'],
+    stone: '#CFC2A4', water: '#7EBAB4'
+  },
+  nordic: {
+    paper: '#E9E5DC', ink: '#26364A', sun: '#E8C39A',
+    sky: ['#DDDCD2', '#CBD4D6'],
+    mountains: ['#A9B4BC', '#7E8E9C', '#5A6D7E'],
+    shapes: ['#43647F', '#2B4359', '#A85E48', '#DDBCA8', '#77897C', '#ADAAA2', '#8CA3B2', '#D6CDBB'],
+    build: ['#EDEAE0', '#DEDACC', '#CDC9BA', '#E7E2D5'],
+    roof: '#6B5B52', roofAlt: '#514640', wood: '#9E5B3E', woodDark: '#75402A',
+    leaf: ['#5F7A63', '#43604F', '#7C8F6C'], bloom: ['#E7D0C6', '#D8B8AC', '#F2E2DA'],
+    stone: '#BDB6A8', water: '#9CB4C0'
+  },
+  andes: {
+    paper: '#EFE3CF', ink: '#3B2F45', sun: '#EDA073',
+    sky: ['#E9DCC2', '#DAD6C4'],
+    mountains: ['#B39C9A', '#957D80', '#6E5C66'],
+    shapes: ['#5E6E96', '#3B4470', '#CE6A44', '#EEC199', '#8C9E70', '#C0AE96', '#9A8CAE', '#E4D2B0'],
+    build: ['#F3E9D6', '#E7DAC2', '#D7C9AE', '#EFE3CC'],
+    roof: '#A85E42', roofAlt: '#834630', wood: '#C06A3C', woodDark: '#8E4526',
+    leaf: ['#7C9264', '#5C7455', '#9AA475'], bloom: ['#F0CDB2', '#E4B399', '#F8E2D0'],
+    stone: '#D0BFA2', water: '#8FB0BE'
+  }
+};
+
+/* ---------- device formats ---------- */
+const DEVICES = [
+  { id: '9x16', group: '9:16', label: 'iPhone / any 9:16', w: 1080, h: 1920 },
+  { id: '9x16-2k', group: '9:16', label: '9:16 at 1440p', w: 1440, h: 2560 },
+  { id: '9x16-4k', group: '9:16', label: '9:16 at 4K', w: 2160, h: 3840 },
+  { id: 'ip16pro', group: 'iPhone Pro', label: 'iPhone 16 Pro', w: 1206, h: 2622 },
+  { id: 'ip16promax', group: 'iPhone Pro', label: 'iPhone 16 Pro Max', w: 1320, h: 2868 },
+  { id: 'ip15pro', group: 'iPhone Pro', label: 'iPhone 15 / 14 Pro', w: 1179, h: 2556 },
+  { id: 'ip15promax', group: 'iPhone Pro', label: 'iPhone 15 / 14 Pro Max', w: 1290, h: 2796 },
+  { id: 's25ultra', group: 'Android flagship', label: 'Galaxy S25 / S24 Ultra', w: 1440, h: 3120 },
+  { id: 's25', group: 'Android flagship', label: 'Galaxy S25 / S24', w: 1080, h: 2340 },
+  { id: 'pixel9pro', group: 'Android flagship', label: 'Pixel 9 Pro', w: 1280, h: 2856 },
+  { id: 'oneplus13', group: 'Android flagship', label: 'OnePlus 13 / Xiaomi 15', w: 1440, h: 3168 }
+];
+const GROUPS = ['9:16', 'iPhone Pro', 'Android flagship'];
+
+/* ---------- geocoding (Open-Meteo — no key, CORS-open) ---------- */
+async function geocode(name) {
+  const url = 'https://geocoding-api.open-meteo.com/v1/search?name=' +
+    encodeURIComponent(name) + '&count=10&language=en&format=json';
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('Search is unavailable right now (' + res.status + ').');
+  const data = await res.json();
+  return (data.results || []).map(r => ({
+    name: r.name, country: r.country || '', cc: (r.country_code || '').toUpperCase(),
+    admin: r.admin1 || '', lat: r.latitude, lon: r.longitude,
+    pop: r.population || 0, tz: r.timezone || ''
+  }));
+}
+const normalise = (s) => (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z ]/g, '').trim();
+const COUNTRY_ALIASES = {
+  'usa': 'united states', 'us': 'united states', 'u s a': 'united states', 'america': 'united states',
+  'uk': 'united kingdom', 'britain': 'united kingdom', 'great britain': 'united kingdom', 'england': 'united kingdom',
+  'uae': 'united arab emirates', 'holland': 'netherlands', 'korea': 'south korea', 'russia': 'russian federation',
+  'czechia': 'czech republic', 'bharat': 'india', 'nippon': 'japan', 'deutschland': 'germany', 'espana': 'spain'
+};
+function countryMatches(userText, result) {
+  let u = normalise(userText);
+  if (!u) return null;
+  u = COUNTRY_ALIASES[u] || u;
+  const c = normalise(result.country);
+  const cc = result.cc.toLowerCase();
+  return c === u || c.includes(u) || u.includes(c) || cc === u.replace(/ /g, '');
+}
+
+/* ---------- built-in gazetteer ----------
+   So the app still works with no network at all (opening the file straight
+   from disk blocks outbound requests in most browsers). Coordinates are
+   city-centre positions; the online lookup, when reachable, is preferred. */
+const GAZ = [
+  ['Kyoto','Japan','JP',35.0116,135.7681],['Tokyo','Japan','JP',35.6895,139.6917],
+  ['Osaka','Japan','JP',34.6937,135.5023],['Nara','Japan','JP',34.6851,135.8048],
+  ['Hiroshima','Japan','JP',34.3853,132.4553],['Sapporo','Japan','JP',43.0618,141.3545],
+  ['Seoul','South Korea','KR',37.5665,126.9780],['Busan','South Korea','KR',35.1796,129.0756],
+  ['Beijing','China','CN',39.9042,116.4074],['Shanghai','China','CN',31.2304,121.4737],
+  ['Hong Kong','Hong Kong','HK',22.3193,114.1694],['Taipei','Taiwan','TW',25.0330,121.5654],
+  ['Hanoi','Vietnam','VN',21.0278,105.8342],['Bangkok','Thailand','TH',13.7563,100.5018],
+  ['Singapore','Singapore','SG',1.3521,103.8198],['Kuala Lumpur','Malaysia','MY',3.1390,101.6869],
+  ['Jakarta','Indonesia','ID',-6.2088,106.8456],['Manila','Philippines','PH',14.5995,120.9842],
+  ['Kathmandu','Nepal','NP',27.7172,85.3240],['Colombo','Sri Lanka','LK',6.9271,79.8612],
+  ['Yangon','Myanmar','MM',16.8409,96.1735],
+  ['Delhi','India','IN',28.6139,77.2090],['New Delhi','India','IN',28.6139,77.2090],
+  ['Mumbai','India','IN',19.0760,72.8777],['Kolkata','India','IN',22.5726,88.3639],
+  ['Chennai','India','IN',13.0827,80.2707],['Bengaluru','India','IN',12.9716,77.5946],
+  ['Hyderabad','India','IN',17.3850,78.4867],['Agra','India','IN',27.1767,78.0081],
+  ['Jaipur','India','IN',26.9124,75.7873],['Varanasi','India','IN',25.3176,82.9739],
+  ['Amritsar','India','IN',31.6340,74.8723],['Pune','India','IN',18.5204,73.8567],
+  ['Ahmedabad','India','IN',23.0225,72.5714],['Kharagpur','India','IN',22.3460,87.2320],
+  ['Madurai','India','IN',9.9252,78.1198],['Kochi','India','IN',9.9312,76.2673],
+  ['Panaji','India','IN',15.4909,73.8278],['Shimla','India','IN',31.1048,77.1734],
+  ['Dubai','United Arab Emirates','AE',25.2048,55.2708],['Abu Dhabi','United Arab Emirates','AE',24.4539,54.3773],
+  ['Doha','Qatar','QA',25.2854,51.5310],['Riyadh','Saudi Arabia','SA',24.7136,46.6753],
+  ['Istanbul','Turkey','TR',41.0082,28.9784],['Cairo','Egypt','EG',30.0444,31.2357],
+  ['Marrakech','Morocco','MA',31.6295,-7.9811],['Casablanca','Morocco','MA',33.5731,-7.5898],
+  ['Jerusalem','Israel','IL',31.7683,35.2137],['Tehran','Iran','IR',35.6892,51.3890],
+  ['Paris','France','FR',48.8566,2.3522],['London','United Kingdom','GB',51.5074,-0.1278],
+  ['Rome','Italy','IT',41.9028,12.4964],['Venice','Italy','IT',45.4408,12.3155],
+  ['Florence','Italy','IT',43.7696,11.2558],['Milan','Italy','IT',45.4642,9.1900],
+  ['Naples','Italy','IT',40.8518,14.2681],['Barcelona','Spain','ES',41.3874,2.1686],
+  ['Madrid','Spain','ES',40.4168,-3.7038],['Lisbon','Portugal','PT',38.7223,-9.1393],
+  ['Porto','Portugal','PT',41.1579,-8.6291],['Amsterdam','Netherlands','NL',52.3676,4.9041],
+  ['Berlin','Germany','DE',52.5200,13.4050],['Munich','Germany','DE',48.1351,11.5820],
+  ['Cologne','Germany','DE',50.9375,6.9603],['Hamburg','Germany','DE',53.5511,9.9937],
+  ['Prague','Czech Republic','CZ',50.0755,14.4378],['Vienna','Austria','AT',48.2082,16.3738],
+  ['Budapest','Hungary','HU',47.4979,19.0402],['Moscow','Russia','RU',55.7558,37.6173],
+  ['Saint Petersburg','Russia','RU',59.9311,30.3609],['Athens','Greece','GR',37.9838,23.7275],
+  ['Edinburgh','United Kingdom','GB',55.9533,-3.1883],['Dublin','Ireland','IE',53.3498,-6.2603],
+  ['Copenhagen','Denmark','DK',55.6761,12.5683],['Stockholm','Sweden','SE',59.3293,18.0686],
+  ['Oslo','Norway','NO',59.9139,10.7522],['Helsinki','Finland','FI',60.1699,24.9384],
+  ['Reykjavik','Iceland','IS',64.1466,-21.9426],['Zurich','Switzerland','CH',47.3769,8.5417],
+  ['Geneva','Switzerland','CH',46.2044,6.1432],['Brussels','Belgium','BE',50.8503,4.3517],
+  ['Krakow','Poland','PL',50.0647,19.9450],['Warsaw','Poland','PL',52.2297,21.0122],
+  ['New York','United States','US',40.7128,-74.0060],['Chicago','United States','US',41.8781,-87.6298],
+  ['San Francisco','United States','US',37.7749,-122.4194],['Los Angeles','United States','US',34.0522,-118.2437],
+  ['Seattle','United States','US',47.6062,-122.3321],['Washington','United States','US',38.9072,-77.0369],
+  ['Boston','United States','US',42.3601,-71.0589],['Toronto','Canada','CA',43.6532,-79.3832],
+  ['Vancouver','Canada','CA',49.2827,-123.1207],['Montreal','Canada','CA',45.5017,-73.5673],
+  ['Mexico City','Mexico','MX',19.4326,-99.1332],['Rio de Janeiro','Brazil','BR',-22.9068,-43.1729],
+  ['Sao Paulo','Brazil','BR',-23.5505,-46.6333],['Buenos Aires','Argentina','AR',-34.6037,-58.3816],
+  ['Lima','Peru','PE',-12.0464,-77.0428],['Santiago','Chile','CL',-33.4489,-70.6693],
+  ['Bogota','Colombia','CO',4.7110,-74.0721],['Cusco','Peru','PE',-13.5319,-71.9675],
+  ['Havana','Cuba','CU',23.1136,-82.3666],['Sydney','Australia','AU',-33.8688,151.2093],
+  ['Melbourne','Australia','AU',-37.8136,144.9631],['Auckland','New Zealand','NZ',-36.8485,174.7633],
+  ['Cape Town','South Africa','ZA',-33.9249,18.4241],['Nairobi','Kenya','KE',-1.2921,36.8219],
+  ['Lagos','Nigeria','NG',6.5244,3.3792],['Addis Ababa','Ethiopia','ET',9.0320,38.7469],
+  ['Kanpur','India','IN',26.4499,80.3319],['Lucknow','India','IN',26.8467,80.9462],
+  ['Nagpur','India','IN',21.1458,79.0882],['Indore','India','IN',22.7196,75.8577],
+  ['Bhopal','India','IN',23.2599,77.4126],['Patna','India','IN',25.5941,85.1376],
+  ['Surat','India','IN',21.1702,72.8311],['Rajkot','India','IN',22.3039,70.8022],
+  ['Vadodara','India','IN',22.3072,73.1812],['Nashik','India','IN',19.9975,73.7898],
+  ['Aurangabad','India','IN',19.8762,75.3433],['Coimbatore','India','IN',11.0168,76.9558],
+  ['Tiruchirappalli','India','IN',10.7905,78.7047],['Visakhapatnam','India','IN',17.6868,83.2185],
+  ['Vijayawada','India','IN',16.5062,80.6480],['Bhubaneswar','India','IN',20.2961,85.8245],
+  ['Puri','India','IN',19.8135,85.8312],['Guwahati','India','IN',26.1445,91.7362],
+  ['Shillong','India','IN',25.5788,91.8933],['Gangtok','India','IN',27.3389,88.6065],
+  ['Siliguri','India','IN',26.7271,88.3953],['Darjeeling','India','IN',27.0410,88.2663],
+  ['Durgapur','India','IN',23.5204,87.3119],['Asansol','India','IN',23.6739,86.9524],
+  ['Jamshedpur','India','IN',22.8046,86.2029],['Ranchi','India','IN',23.3441,85.3096],
+  ['Raipur','India','IN',21.2514,81.6296],['Chandigarh','India','IN',30.7333,76.7794],
+  ['Ludhiana','India','IN',30.9010,75.8573],['Dehradun','India','IN',30.3165,78.0322],
+  ['Rishikesh','India','IN',30.0869,78.2676],['Haridwar','India','IN',29.9457,78.1642],
+  ['Srinagar','India','IN',34.0837,74.7973],['Leh','India','IN',34.1526,77.5771],
+  ['Jodhpur','India','IN',26.2389,73.0243],['Udaipur','India','IN',24.5854,73.7125],
+  ['Jaisalmer','India','IN',26.9157,70.9083],['Khajuraho','India','IN',24.8318,79.9199],
+  ['Hampi','India','IN',15.3350,76.4600],['Mysuru','India','IN',12.2958,76.6394],
+  ['Mangaluru','India','IN',12.9141,74.8560],['Thiruvananthapuram','India','IN',8.5241,76.9366],
+  ['Puducherry','India','IN',11.9416,79.8083],['Kanyakumari','India','IN',8.0883,77.5385],
+  ['Bodh Gaya','India','IN',24.6959,84.9911],
+  ['Dhaka','Bangladesh','BD',23.8103,90.4125],['Karachi','Pakistan','PK',24.8607,67.0011],
+  ['Lahore','Pakistan','PK',31.5204,74.3587],['Islamabad','Pakistan','PK',33.6844,73.0479],
+  ['Male','Maldives','MV',4.1755,73.5093],['Thimphu','Bhutan','BT',27.4728,89.6390],
+  ['Ho Chi Minh City','Vietnam','VN',10.8231,106.6297],['Da Nang','Vietnam','VN',16.0544,108.2022],
+  ['Phnom Penh','Cambodia','KH',11.5564,104.9282],['Siem Reap','Cambodia','KH',13.3671,103.8448],
+  ['Vientiane','Laos','LA',17.9757,102.6331],['Denpasar','Indonesia','ID',-8.6500,115.2167],
+  ['Surabaya','Indonesia','ID',-7.2575,112.7521],['Cebu','Philippines','PH',10.3157,123.8854],
+  ['Guangzhou','China','CN',23.1291,113.2644],['Shenzhen','China','CN',22.5431,114.0579],
+  ['Chengdu','China','CN',30.5728,104.0668],["Xi'an",'China','CN',34.3416,108.9398],
+  ['Macau','Macau','MO',22.1987,113.5439],['Nagoya','Japan','JP',35.1815,136.9066],
+  ['Fukuoka','Japan','JP',33.5904,130.4017],['Kobe','Japan','JP',34.6901,135.1955],
+  ['Kanazawa','Japan','JP',36.5613,136.6562],['Ulaanbaatar','Mongolia','MN',47.8864,106.9057],
+  ['Tashkent','Uzbekistan','UZ',41.2995,69.2401],['Almaty','Kazakhstan','KZ',43.2220,76.8512],
+  ['Baku','Azerbaijan','AZ',40.4093,49.8671],['Tbilisi','Georgia','GE',41.7151,44.8271],
+  ['Yerevan','Armenia','AM',40.1792,44.4991],['Muscat','Oman','OM',23.5880,58.3829],
+  ['Kuwait City','Kuwait','KW',29.3759,47.9774],['Amman','Jordan','JO',31.9454,35.9284],
+  ['Beirut','Lebanon','LB',33.8938,35.5018],['Tel Aviv','Israel','IL',32.0853,34.7818],
+  ['Alexandria','Egypt','EG',31.2001,29.9187],['Luxor','Egypt','EG',25.6872,32.6396],
+  ['Fez','Morocco','MA',34.0181,-5.0078],['Tangier','Morocco','MA',35.7595,-5.8340],
+  ['Tunis','Tunisia','TN',36.8065,10.1815],['Algiers','Algeria','DZ',36.7538,3.0588],
+  ['Johannesburg','South Africa','ZA',-26.2041,28.0473],['Durban','South Africa','ZA',-29.8587,31.0218],
+  ['Accra','Ghana','GH',5.6037,-0.1870],['Dakar','Senegal','SN',14.7167,-17.4677],
+  ['Kampala','Uganda','UG',0.3476,32.5825],['Dar es Salaam','Tanzania','TZ',-6.7924,39.2083],
+  ['Nice','France','FR',43.7102,7.2620],['Marseille','France','FR',43.2965,5.3698],
+  ['Lyon','France','FR',45.7640,4.8357],['Bordeaux','France','FR',44.8378,-0.5792],
+  ['Seville','Spain','ES',37.3891,-5.9845],['Valencia','Spain','ES',39.4699,-0.3763],
+  ['Granada','Spain','ES',37.1773,-3.5986],['Bilbao','Spain','ES',43.2630,-2.9350],
+  ['Bologna','Italy','IT',44.4949,11.3426],['Turin','Italy','IT',45.0703,7.6869],
+  ['Palermo','Italy','IT',38.1157,13.3615],['Verona','Italy','IT',45.4384,10.9916],
+  ['Bruges','Belgium','BE',51.2093,3.2247],['Rotterdam','Netherlands','NL',51.9244,4.4777],
+  ['Frankfurt','Germany','DE',50.1109,8.6821],['Dresden','Germany','DE',51.0504,13.7373],
+  ['Stuttgart','Germany','DE',48.7758,9.1829],['Salzburg','Austria','AT',47.8095,13.0550],
+  ['Bratislava','Slovakia','SK',48.1486,17.1077],['Ljubljana','Slovenia','SI',46.0569,14.5058],
+  ['Zagreb','Croatia','HR',45.8150,15.9819],['Dubrovnik','Croatia','HR',42.6507,18.0944],
+  ['Belgrade','Serbia','RS',44.7866,20.4489],['Bucharest','Romania','RO',44.4268,26.1025],
+  ['Sofia','Bulgaria','BG',42.6977,23.3219],['Kyiv','Ukraine','UA',50.4501,30.5234],
+  ['Tallinn','Estonia','EE',59.4370,24.7536],['Riga','Latvia','LV',56.9496,24.1052],
+  ['Vilnius','Lithuania','LT',54.6872,25.2797],['Glasgow','United Kingdom','GB',55.8642,-4.2518],
+  ['Manchester','United Kingdom','GB',53.4808,-2.2426],['Liverpool','United Kingdom','GB',53.4084,-2.9916],
+  ['Oxford','United Kingdom','GB',51.7520,-1.2577],['Cardiff','United Kingdom','GB',51.4816,-3.1791],
+  ['Miami','United States','US',25.7617,-80.1918],['Denver','United States','US',39.7392,-104.9903],
+  ['Austin','United States','US',30.2672,-97.7431],['Portland','United States','US',45.5152,-122.6784],
+  ['Philadelphia','United States','US',39.9526,-75.1652],['New Orleans','United States','US',29.9511,-90.0715],
+  ['Las Vegas','United States','US',36.1699,-115.1398],['San Diego','United States','US',32.7157,-117.1611],
+  ['Atlanta','United States','US',33.7490,-84.3880],['Houston','United States','US',29.7604,-95.3698],
+  ['Dallas','United States','US',32.7767,-96.7970],['Phoenix','United States','US',33.4484,-112.0740],
+  ['Nashville','United States','US',36.1627,-86.7816],['Minneapolis','United States','US',44.9778,-93.2650],
+  ['Detroit','United States','US',42.3314,-83.0458],['Pittsburgh','United States','US',40.4406,-79.9959],
+  ['Salt Lake City','United States','US',40.7608,-111.8910],['Honolulu','United States','US',21.3069,-157.8583],
+  ['Calgary','Canada','CA',51.0447,-114.0719],['Ottawa','Canada','CA',45.4215,-75.6972],
+  ['Quebec City','Canada','CA',46.8139,-71.2080],['Guadalajara','Mexico','MX',20.6597,-103.3496],
+  ['Monterrey','Mexico','MX',25.6866,-100.3161],['Cancun','Mexico','MX',21.1619,-86.8515],
+  ['Medellin','Colombia','CO',6.2442,-75.5812],['Cartagena','Colombia','CO',10.3910,-75.4794],
+  ['Quito','Ecuador','EC',-0.1807,-78.4678],['La Paz','Bolivia','BO',-16.4897,-68.1193],
+  ['Montevideo','Uruguay','UY',-34.9011,-56.1645],['Brasilia','Brazil','BR',-15.7939,-47.8828],
+  ['Salvador','Brazil','BR',-12.9777,-38.5016],['Curitiba','Brazil','BR',-25.4284,-49.2733],
+  ['Porto Alegre','Brazil','BR',-30.0346,-51.2177],['Brisbane','Australia','AU',-27.4698,153.0251],
+  ['Perth','Australia','AU',-31.9505,115.8605],['Adelaide','Australia','AU',-34.9285,138.6007],
+  ['Hobart','Australia','AU',-42.8821,147.3272],['Wellington','New Zealand','NZ',-41.2866,174.7756],
+  ['Christchurch','New Zealand','NZ',-43.5321,172.6362],['Queenstown','New Zealand','NZ',-45.0312,168.6626]
+].map(g => ({ name: g[0], country: g[1], cc: g[2], lat: g[3], lon: g[4], admin: '', pop: 0, builtin: true }));
+
+function localSearch(q) {
+  const nq = normalise(q);
+  if (!nq) return [];
+  const starts = [], has = [];
+  for (const g of GAZ) {
+    const nn = normalise(g.name);
+    if (nn === nq) starts.unshift(g);
+    else if (nn.startsWith(nq)) starts.push(g);
+    else if (nn.includes(nq) || nq.includes(nn)) has.push(g);
+  }
+  return starts.concat(has);
+}
+/* ============================================================
+   LANDMARK LIBRARY
+   Each entry draws a stylised silhouette in the plate's own palette.
+   Signature: fn(x, base, h, P, r) -> svg string
+   x = centre, base = ground line, h = height of the structure.
+   These are interpretations for print, not measured elevations.
+   ============================================================ */
+
+function windows(x, y, w, h, cols, rows, col, op) {
+  let s = '', gw = w / (cols * 2 + 1), gh = h / (rows * 2 + 1);
+  for (let i = 0; i < cols; i++) for (let j = 0; j < rows; j++)
+    s += rect(x + gw * (1 + i * 2), y + gh * (1 + j * 2), gw, gh * 0.9, col, `opacity="${op}"`);
+  return s;
+}
+function slats(x, y, w, h, count, col, op) {
+  let s = '';
+  for (let i = 1; i < count; i++) s += line(x + (w / count) * i, y, x + (w / count) * i, y + h, col, Math.max(0.6, w * 0.006), `opacity="${op}"`);
+  return s;
+}
+
+const LM = {};
+
+/* --- East & South-East Asia --- */
+LM.pagoda = { name: 'Pagoda', fn(x, base, h, P, r) {
+  const tiers = 5, finial = h * 0.30, stack = h - finial, th = stack / tiers, w0 = h * 0.60;
+  let s = '';
+  s += rect(x - w0 * 0.62, base - h * 0.02, w0 * 1.24, h * 0.03, P.stone);
+  for (let i = 0; i < tiers; i++) {
+    const y = base - th * i, w = w0 * (1 - i * 0.085);
+    s += rect(x - w / 2, y - th * 0.72, w, th * 0.72, P.wood);
+    s += slats(x - w / 2, y - th * 0.66, w, th * 0.6, 6, P.woodDark, .45);
+    s += rect(x - w * 0.60, y - th * 0.80, w * 1.20, th * 0.10, P.woodDark, 'opacity=".75"');
+    s += sweepRoof(x, y - th * 0.78, w * 1.62, th * 0.62, i % 2 ? P.roofAlt : P.roof);
+  }
+  const ty = base - stack;
+  s += tri(x - w0 * 0.30, ty + th * 0.05, x + w0 * 0.30, ty + th * 0.05, x, ty - finial * 0.16, P.roof);
+  s += rect(x - h * 0.012, ty - finial, h * 0.024, finial, P.roof);
+  for (let i = 0; i < 9; i++) {
+    const ry = ty - finial * 0.22 - (finial * 0.62 / 9) * i, rw = h * 0.075 * (1 - i * 0.07);
+    s += ell(x, ry, rw, h * 0.011, P.roof);
+  }
+  s += circ(x, ty - finial * 0.90, h * 0.022, P.roof);
+  return s;
+} };
+
+LM.templeHall = { name: 'Hillside temple hall', fn(x, base, h, P, r) {
+  const w = h * 1.65, deck = base - h * 0.42;
+  let s = '';
+  for (let i = 0; i <= 9; i++) {
+    const px = x - w * 0.42 + (w * 0.84 / 9) * i;
+    s += rect(px, deck, h * 0.035, base - deck, P.woodDark, 'opacity=".9"');
+  }
+  for (let i = 1; i <= 3; i++) s += rect(x - w * 0.42, deck + (base - deck) * (i / 4), w * 0.85, h * 0.022, P.woodDark, 'opacity=".7"');
+  s += rect(x - w / 2, deck - h * 0.06, w, h * 0.07, P.wood);
+  s += rect(x - w / 2, deck - h * 0.30, w * 0.94, h * 0.25, P.wood, 'opacity=".92"');
+  s += slats(x - w / 2, deck - h * 0.30, w * 0.94, h * 0.25, 9, P.woodDark, .5);
+  s += sweepRoof(x - w * 0.16, deck - h * 0.28, w * 0.80, h * 0.30, P.roof);
+  s += rect(x + w * 0.12, deck - h * 0.52, w * 0.34, h * 0.24, P.wood);
+  s += sweepRoof(x + w * 0.29, deck - h * 0.50, w * 0.56, h * 0.30, P.roofAlt);
+  return s;
+} };
+
+LM.torii = { name: 'Torii gate', fn(x, base, h, P) {
+  const w = h * 0.86, t = h * 0.09;
+  let s = '';
+  s += rect(x - w / 2, base - h * 0.92, t, h * 0.92, P.wood);
+  s += rect(x + w / 2 - t, base - h * 0.92, t, h * 0.92, P.wood);
+  s += path(`M${n(x - w * 0.68)} ${n(base - h * 0.86)}Q${n(x)} ${n(base - h * 1.00)} ${n(x + w * 0.68)} ${n(base - h * 0.86)}L${n(x + w * 0.66)} ${n(base - h * 0.78)}Q${n(x)} ${n(base - h * 0.90)} ${n(x - w * 0.66)} ${n(base - h * 0.78)}Z`, P.wood);
+  s += rect(x - w * 0.56, base - h * 0.68, w * 1.12, t * 0.7, P.wood);
+  s += rect(x - t * 0.4, base - h * 0.86, t * 0.8, h * 0.22, P.woodDark, 'opacity=".8"');
+  return s;
+} };
+
+LM.gopuram = { name: 'Gopuram tower', fn(x, base, h, P) {
+  const tiers = 6, w0 = h * 0.66;
+  let s = rect(x - w0 * 0.60, base - h * 0.20, w0 * 1.20, h * 0.20, P.stone);
+  s += rect(x - w0 * 0.16, base - h * 0.20, w0 * 0.32, h * 0.20, P.woodDark, 'opacity=".55"');
+  for (let i = 0; i < tiers; i++) {
+    const t = i / tiers, y = base - h * (0.20 + 0.60 * t), w = w0 * (1 - t * 0.55), hh = h * 0.60 / tiers;
+    s += path(`M${n(x - w / 2)} ${n(y)}L${n(x + w / 2)} ${n(y)}L${n(x + w * 0.42)} ${n(y - hh)}L${n(x - w * 0.42)} ${n(y - hh)}Z`, i % 2 ? P.build[1] : P.build[0]);
+    s += rect(x - w * 0.54, y - hh * 1.10, w * 1.08, hh * 0.20, P.wood, 'opacity=".85"');
+    for (let k = -1; k <= 1; k++) s += rect(x + k * w * 0.26 - w * 0.045, y - hh * 0.82, w * 0.09, hh * 0.62, P.woodDark, 'opacity=".35"');
+  }
+  const ty = base - h * 0.80, tw = w0 * 0.46;
+  s += path(`M${n(x - tw / 2)} ${n(ty)}Q${n(x)} ${n(ty - h * 0.20)} ${n(x + tw / 2)} ${n(ty)}Z`, P.wood);
+  for (let k = -2; k <= 2; k++) s += ell(x + k * tw * 0.22, ty - h * 0.155 - Math.abs(k) * h * -0.008, h * 0.016, h * 0.03, P.woodDark);
+  return s;
+} };
+
+LM.stupa = { name: 'Stupa', fn(x, base, h, P) {
+  const w = h * 0.92;
+  let s = rect(x - w * 0.56, base - h * 0.10, w * 1.12, h * 0.10, P.stone);
+  s += path(`M${n(x - w / 2)} ${n(base - h * 0.10)}A${n(w / 2)} ${n(h * 0.42)} 0 0 1 ${n(x + w / 2)} ${n(base - h * 0.10)}Z`, P.build[0]);
+  s += rect(x - w * 0.14, base - h * 0.62, w * 0.28, h * 0.10, P.build[2]);
+  for (let i = 0; i < 8; i++) s += ell(x, base - h * 0.64 - (h * 0.24 / 8) * i, w * 0.11 * (1 - i * 0.09), h * 0.014, P.wood);
+  s += rect(x - w * 0.012, base - h * 0.96, w * 0.024, h * 0.10, P.wood);
+  s += circ(x, base - h * 0.97, w * 0.03, P.wood);
+  return s;
+} };
+
+/* --- Modern towers --- */
+LM.observationTower = { name: 'Observation tower', fn(x, base, h, P) {
+  const w = h * 0.17;
+  let s = rect(x - w * 1.6, base - h * 0.17, w * 3.2, h * 0.17, P.build[0]);
+  s += windows(x - w * 1.5, base - h * 0.15, w * 3.0, h * 0.11, 7, 2, P.ink, .18);
+  s += path(`M${n(x - w * 0.62)} ${n(base - h * 0.17)}C${n(x - w * 0.40)} ${n(base - h * 0.45)} ${n(x - w * 0.26)} ${n(base - h * 0.62)} ${n(x - w * 0.20)} ${n(base - h * 0.86)}L${n(x + w * 0.20)} ${n(base - h * 0.86)}C${n(x + w * 0.26)} ${n(base - h * 0.62)} ${n(x + w * 0.40)} ${n(base - h * 0.45)} ${n(x + w * 0.62)} ${n(base - h * 0.17)}Z`, P.build[0]);
+  s += path(`M${n(x - w * 0.86)} ${n(base - h * 0.70)}L${n(x + w * 0.86)} ${n(base - h * 0.70)}L${n(x + w * 0.62)} ${n(base - h * 0.78)}L${n(x - w * 0.62)} ${n(base - h * 0.78)}Z`, P.wood);
+  s += rect(x - w * 0.80, base - h * 0.755, w * 1.6, h * 0.028, P.woodDark, 'opacity=".7"');
+  s += rect(x - w * 0.10, base - h * 0.995, w * 0.20, h * 0.14, P.build[2]);
+  s += line(x, base - h * 0.995, x, base - h * 1.10, P.ink, h * 0.008, 'opacity=".8"');
+  return s;
+} };
+
+LM.burj = { name: 'Stepped supertall', fn(x, base, h, P) {
+  const w = h * 0.30, steps = 7;
+  let s = '';
+  for (let i = 0; i < steps; i++) {
+    const t = i / steps, ww = w * (1 - t * 0.78), hh = h * 0.78 / steps;
+    s += rect(x - ww / 2, base - h * 0.78 * (t + 1 / steps) - (h * 0.02), ww, hh + h * 0.02, P.build[i % 2]);
+    s += rect(x - ww / 2, base - h * 0.78 * (t + 1 / steps) - (h * 0.02), ww * 0.10, hh, P.ink, 'opacity=".10"');
+  }
+  s += path(`M${n(x - w * 0.05)} ${n(base - h * 0.78)}L${n(x + w * 0.05)} ${n(base - h * 0.78)}L${n(x)} ${n(base - h)}Z`, P.build[1]);
+  return s;
+} };
+
+LM.twinTowers = { name: 'Twin towers', fn(x, base, h, P) {
+  const gap = h * 0.42, w = h * 0.20;
+  let s = '';
+  [-1, 1].forEach(k => {
+    const cx = x + k * gap / 2;
+    for (let i = 0; i < 5; i++) {
+      const ww = w * (1 - i * 0.13), hh = h * 0.80 / 5;
+      s += rect(cx - ww / 2, base - hh * (i + 1) - h * 0.005, ww, hh + h * 0.01, P.build[i % 2]);
+    }
+    s += rect(cx - w * 0.02, base - h * 0.99, w * 0.04, h * 0.19, P.build[2]);
+    s += windows(cx - w * 0.42, base - h * 0.78, w * 0.84, h * 0.72, 3, 12, P.ink, .12);
+  });
+  s += rect(x - gap * 0.5, base - h * 0.50, gap, h * 0.020, P.build[2]);
+  s += line(x - gap * 0.28, base - h * 0.50, x - gap * 0.06, base - h * 0.38, P.build[2], h * 0.01);
+  s += line(x + gap * 0.28, base - h * 0.50, x + gap * 0.06, base - h * 0.38, P.build[2], h * 0.01);
+  return s;
+} };
+
+LM.artDeco = { name: 'Art-deco skyscraper', fn(x, base, h, P) {
+  const w = h * 0.30;
+  let s = '';
+  const steps = [[1, .44], [.78, .68], [.56, .84], [.34, .92]];
+  steps.forEach((st, i) => {
+    s += rect(x - w * st[0] / 2, base - h * st[1], w * st[0], h * st[1], P.build[i % 3]);
+    s += windows(x - w * st[0] / 2 + w * 0.02, base - h * st[1] + h * 0.02, w * st[0] - w * 0.04, h * (st[1] - (steps[i - 1] ? steps[i - 1][1] : 0)) * 0.9, 3, 6, P.ink, .13);
+  });
+  s += path(`M${n(x - w * 0.17)} ${n(base - h * 0.92)}Q${n(x)} ${n(base - h * 1.00)} ${n(x + w * 0.17)} ${n(base - h * 0.92)}Z`, P.build[2]);
+  s += line(x, base - h * 0.99, x, base - h * 1.10, P.ink, h * 0.008, 'opacity=".7"');
+  return s;
+} };
+
+LM.skyline = { name: 'Downtown cluster', fn(x, base, h, P, r) {
+  const w = h * 1.55, cols = 7;
+  let s = '';
+  for (let i = 0; i < cols; i++) {
+    const bw = w / cols * between(r, .74, .98);
+    const bh = h * [0.55, 0.82, 0.66, 1.0, 0.72, 0.88, 0.60][i] * between(r, .88, 1.06);
+    const bx = x - w / 2 + (w / cols) * i;
+    s += rect(bx, base - bh, bw, bh, P.build[i % 4]);
+    s += windows(bx + bw * 0.12, base - bh + bh * 0.06, bw * 0.76, bh * 0.86, 3, Math.max(4, Math.round(bh / (h * 0.09))), P.ink, .12);
+    if (i % 3 === 1) s += line(bx + bw / 2, base - bh, bx + bw / 2, base - bh - h * 0.14, P.ink, h * 0.006, 'opacity=".55"');
+  }
+  return s;
+} };
+
+/* --- Europe --- */
+LM.eiffel = { name: 'Iron lattice tower', fn(x, base, h, P) {
+  const w = h * 0.56, c = P.build[2], d = P.ink;
+  let s = path(
+    `M${n(x - w / 2)} ${n(base)}C${n(x - w * 0.30)} ${n(base - h * 0.34)} ${n(x - w * 0.14)} ${n(base - h * 0.52)} ${n(x - w * 0.055)} ${n(base - h)}` +
+    `L${n(x + w * 0.055)} ${n(base - h)}C${n(x + w * 0.14)} ${n(base - h * 0.52)} ${n(x + w * 0.30)} ${n(base - h * 0.34)} ${n(x + w / 2)} ${n(base)}` +
+    `L${n(x + w * 0.30)} ${n(base)}C${n(x + w * 0.20)} ${n(base - h * 0.30)} ${n(x + w * 0.06)} ${n(base - h * 0.52)} ${n(x)} ${n(base - h * 0.95)}` +
+    `C${n(x - w * 0.06)} ${n(base - h * 0.52)} ${n(x - w * 0.20)} ${n(base - h * 0.30)} ${n(x - w * 0.30)} ${n(base)}Z`, c);
+  s += path(`M${n(x - w * 0.46)} ${n(base - h * 0.17)}Q${n(x)} ${n(base - h * 0.30)} ${n(x + w * 0.46)} ${n(base - h * 0.17)}L${n(x + w * 0.44)} ${n(base - h * 0.10)}Q${n(x)} ${n(base - h * 0.22)} ${n(x - w * 0.44)} ${n(base - h * 0.10)}Z`, c);
+  s += rect(x - w * 0.34, base - h * 0.34, w * 0.68, h * 0.035, c);
+  s += rect(x - w * 0.18, base - h * 0.60, w * 0.36, h * 0.028, c);
+  s += rect(x - w * 0.09, base - h * 0.90, w * 0.18, h * 0.03, c);
+  s += line(x, base - h, x, base - h * 1.06, d, h * 0.008, 'opacity=".8"');
+  return s;
+} };
+
+LM.clockTower = { name: 'Clock tower', fn(x, base, h, P) {
+  const w = h * 0.20;
+  let s = rect(x - w / 2, base - h * 0.72, w, h * 0.72, P.build[0]);
+  s += slats(x - w / 2, base - h * 0.70, w, h * 0.60, 4, P.ink, .12);
+  s += rect(x - w * 0.60, base - h * 0.80, w * 1.20, h * 0.10, P.build[1]);
+  s += circ(x, base - h * 0.75, w * 0.30, P.paper);
+  s += circ(x, base - h * 0.75, w * 0.30, 'none', `stroke="${P.ink}" stroke-width="${n(h * 0.008)}" opacity=".7"`);
+  s += line(x, base - h * 0.75, x, base - h * 0.79, P.ink, h * 0.008);
+  s += line(x, base - h * 0.75, x + w * 0.16, base - h * 0.75, P.ink, h * 0.007);
+  s += rect(x - w * 0.46, base - h * 0.87, w * 0.92, h * 0.07, P.build[2]);
+  s += path(`M${n(x - w * 0.44)} ${n(base - h * 0.87)}L${n(x + w * 0.44)} ${n(base - h * 0.87)}L${n(x)} ${n(base - h)}Z`, P.roof);
+  [-1, 1].forEach(k => s += tri(x + k * w * 0.44, base - h * 0.87, x + k * w * 0.52, base - h * 0.87, x + k * w * 0.48, base - h * 0.94, P.roof));
+  return s;
+} };
+
+LM.domedBasilica = { name: 'Domed basilica', fn(x, base, h, P) {
+  const w = h * 1.30;
+  let s = rect(x - w / 2, base - h * 0.34, w, h * 0.34, P.build[0]);
+  for (let i = 0; i < 9; i++) s += rect(x - w * 0.46 + (w * 0.92 / 9) * i, base - h * 0.30, w * 0.045, h * 0.30, P.build[2], 'opacity=".55"');
+  s += path(`M${n(x - w * 0.30)} ${n(base - h * 0.34)}L${n(x + w * 0.30)} ${n(base - h * 0.34)}L${n(x + w * 0.24)} ${n(base - h * 0.42)}L${n(x - w * 0.24)} ${n(base - h * 0.42)}Z`, P.build[1]);
+  s += rect(x - w * 0.22, base - h * 0.56, w * 0.44, h * 0.14, P.build[1]);
+  s += path(`M${n(x - w * 0.23)} ${n(base - h * 0.56)}C${n(x - w * 0.23)} ${n(base - h * 0.86)} ${n(x + w * 0.23)} ${n(base - h * 0.86)} ${n(x + w * 0.23)} ${n(base - h * 0.56)}Z`, P.build[3]);
+  for (let k = -2; k <= 2; k++) s += line(x + k * w * 0.075, base - h * 0.57, x + k * w * 0.035, base - h * 0.82, P.ink, h * 0.005, 'opacity=".25"');
+  s += rect(x - w * 0.05, base - h * 0.93, w * 0.10, h * 0.09, P.build[1]);
+  s += circ(x, base - h * 0.955, w * 0.03, P.build[3]);
+  s += line(x, base - h * 0.955, x, base - h * 1.01, P.ink, h * 0.007, 'opacity=".7"');
+  return s;
+} };
+
+LM.gothic = { name: 'Gothic cathedral', fn(x, base, h, P) {
+  const w = h * 0.86;
+  let s = rect(x - w / 2, base - h * 0.46, w, h * 0.46, P.build[0]);
+  s += path(`M${n(x - w * 0.26)} ${n(base - h * 0.46)}L${n(x)} ${n(base - h * 0.60)}L${n(x + w * 0.26)} ${n(base - h * 0.46)}Z`, P.build[1]);
+  s += circ(x, base - h * 0.36, w * 0.10, P.paper, 'opacity=".7"');
+  [-1, 1].forEach(k => {
+    const cx = x + k * w * 0.36;
+    s += rect(cx - w * 0.11, base - h * 0.70, w * 0.22, h * 0.70, P.build[1]);
+    s += path(`M${n(cx - w * 0.13)} ${n(base - h * 0.70)}L${n(cx + w * 0.13)} ${n(base - h * 0.70)}L${n(cx)} ${n(base - h)}Z`, P.build[2]);
+    s += rect(cx - w * 0.04, base - h * 0.46, w * 0.08, h * 0.22, P.ink, 'opacity=".14"');
+  });
+  for (let i = -2; i <= 2; i++) s += rect(x + i * w * 0.13 - w * 0.035, base - h * 0.22, w * 0.07, h * 0.22, P.ink, 'opacity=".13"');
+  return s;
+} };
+
+LM.spires = { name: 'Sculpted spires', fn(x, base, h, P, r) {
+  const w = h * 0.78;
+  let s = rect(x - w / 2, base - h * 0.32, w, h * 0.32, P.build[0]);
+  [-0.40, -0.16, 0.10, 0.36].forEach((o, i) => {
+    const cx = x + w * o, hh = h * [0.72, 0.94, 0.86, 0.66][i], bw = w * 0.15;
+    s += path(`M${n(cx - bw / 2)} ${n(base - h * 0.30)}L${n(cx + bw / 2)} ${n(base - h * 0.30)}L${n(cx + bw * 0.16)} ${n(base - hh)}L${n(cx - bw * 0.16)} ${n(base - hh)}Z`, P.build[i % 3]);
+    s += circ(cx, base - hh - h * 0.02, w * 0.028, P.wood);
+    for (let k = 1; k < 4; k++) s += line(cx - bw * 0.4, base - h * 0.30 - (hh - h * 0.30) * k / 4, cx + bw * 0.4, base - h * 0.30 - (hh - h * 0.30) * k / 4, P.ink, h * 0.004, 'opacity=".2"');
+  });
+  return s;
+} };
+
+LM.onionChurch = { name: 'Onion-dome church', fn(x, base, h, P) {
+  const w = h * 0.92;
+  const onion = (cx, cy, rw, rh, col) => path(
+    `M${n(cx - rw)} ${n(cy)}C${n(cx - rw * 1.25)} ${n(cy - rh * 0.55)} ${n(cx - rw * 0.55)} ${n(cy - rh)} ${n(cx)} ${n(cy - rh * 1.15)}` +
+    `C${n(cx + rw * 0.55)} ${n(cy - rh)} ${n(cx + rw * 1.25)} ${n(cy - rh * 0.55)} ${n(cx + rw)} ${n(cy)}Z`, col);
+  let s = rect(x - w / 2, base - h * 0.34, w, h * 0.34, P.build[0]);
+  [[-0.34, 0.52, 0.11], [0.34, 0.52, 0.11], [-0.16, 0.62, 0.10], [0.16, 0.62, 0.10], [0, 0.78, 0.15]].forEach((t, i) => {
+    const cx = x + w * t[0], top = base - h * t[1], rw = w * t[2];
+    s += rect(cx - rw * 0.72, base - h * t[1], rw * 1.44, h * (t[1] - 0.30), P.build[(i + 1) % 3]);
+    s += onion(cx, top, rw, rw * 1.5, [P.shapes[2], P.shapes[0], P.shapes[4], P.shapes[3], P.shapes[1]][i]);
+    s += line(cx, top - rw * 1.72, cx, top - rw * 2.15, P.wood, h * 0.008);
+    s += line(cx - rw * 0.18, top - rw * 2.0, cx + rw * 0.18, top - rw * 2.0, P.wood, h * 0.007);
+  });
+  return s;
+} };
+
+LM.canalHouses = { name: 'Canal houses', fn(x, base, h, P, r) {
+  const w = h * 1.5, cols = 6;
+  let s = '';
+  for (let i = 0; i < cols; i++) {
+    const bw = w / cols, bx = x - w / 2 + bw * i, bh = h * between(r, .62, .95);
+    s += rect(bx + bw * 0.06, base - bh, bw * 0.88, bh, P.build[i % 4]);
+    const gy = base - bh;
+    if (i % 3 === 0) s += path(`M${n(bx + bw * 0.06)} ${n(gy)}L${n(bx + bw * 0.5)} ${n(gy - bw * 0.5)}L${n(bx + bw * 0.94)} ${n(gy)}Z`, P.roof);
+    else if (i % 3 === 1) {
+      s += rect(bx + bw * 0.06, gy - bw * 0.22, bw * 0.88, bw * 0.22, P.roof);
+      s += rect(bx + bw * 0.24, gy - bw * 0.42, bw * 0.52, bw * 0.22, P.roof);
+    } else s += path(`M${n(bx + bw * 0.06)} ${n(gy)}Q${n(bx + bw * 0.5)} ${n(gy - bw * 0.62)} ${n(bx + bw * 0.94)} ${n(gy)}Z`, P.roof);
+    s += windows(bx + bw * 0.18, gy + bh * 0.10, bw * 0.64, bh * 0.78, 2, 4, P.ink, .16);
+  }
+  return s;
+} };
+
+LM.windmill = { name: 'Windmill', fn(x, base, h, P) {
+  const w = h * 0.42;
+  let s = path(`M${n(x - w / 2)} ${n(base)}L${n(x + w / 2)} ${n(base)}L${n(x + w * 0.26)} ${n(base - h * 0.62)}L${n(x - w * 0.26)} ${n(base - h * 0.62)}Z`, P.build[1]);
+  s += rect(x - w * 0.34, base - h * 0.72, w * 0.68, h * 0.10, P.roof);
+  s += path(`M${n(x - w * 0.30)} ${n(base - h * 0.72)}Q${n(x)} ${n(base - h * 0.86)} ${n(x + w * 0.30)} ${n(base - h * 0.72)}Z`, P.roof);
+  const cy = base - h * 0.74, arm = h * 0.36;
+  [[0.92, 0.38], [-0.38, 0.92], [-0.92, -0.38], [0.38, -0.92]].forEach(v => {
+    const ex = x + v[0] * arm, ey = cy + v[1] * arm;
+    s += path(`M${n(x)} ${n(cy)}L${n(ex - v[1] * arm * 0.11)} ${n(ey + v[0] * arm * 0.11)}L${n(ex + v[1] * arm * 0.11)} ${n(ey - v[0] * arm * 0.11)}Z`, P.woodDark, 'opacity=".85"');
+  });
+  s += circ(x, cy, w * 0.07, P.wood);
+  return s;
+} };
+
+LM.castle = { name: 'Castle', fn(x, base, h, P) {
+  const w = h * 1.25;
+  let s = rect(x - w / 2, base - h * 0.44, w, h * 0.44, P.build[0]);
+  for (let i = 0; i < 11; i++) s += rect(x - w * 0.48 + (w * 0.96 / 11) * i, base - h * 0.50, w * 0.05, h * 0.06, P.build[0]);
+  [[-0.38, 0.78, 0.15], [0.10, 0.96, 0.17], [0.42, 0.72, 0.13]].forEach((t, i) => {
+    const cx = x + w * t[0], hh = h * t[1], tw = w * t[2];
+    s += rect(cx - tw / 2, base - hh, tw, hh, P.build[(i + 1) % 3]);
+    s += path(`M${n(cx - tw * 0.62)} ${n(base - hh)}L${n(cx + tw * 0.62)} ${n(base - hh)}L${n(cx)} ${n(base - hh - tw * 1.05)}Z`, P.roof);
+    s += rect(cx - tw * 0.14, base - hh * 0.72, tw * 0.28, hh * 0.26, P.ink, 'opacity=".18"');
+    s += line(cx, base - hh - tw * 1.05, cx, base - hh - tw * 1.35, P.wood, h * 0.006);
+  });
+  s += rect(x - w * 0.06, base - h * 0.26, w * 0.12, h * 0.26, P.ink, 'opacity=".22"');
+  return s;
+} };
+
+LM.parthenon = { name: 'Classical temple', fn(x, base, h, P) {
+  const w = h * 1.55, cols = 8;
+  let s = '';
+  for (let i = 0; i < 3; i++) s += rect(x - w / 2 - w * 0.03 * (2 - i), base - h * (0.08 - i * 0.03), w + w * 0.06 * (2 - i), h * 0.03, P.stone);
+  for (let i = 0; i < cols; i++) {
+    const cw = w * 0.062, cx = x - w * 0.44 + (w * 0.88 / (cols - 1)) * i;
+    s += rect(cx - cw / 2, base - h * 0.68, cw, h * 0.60, P.build[0]);
+    s += slats(cx - cw / 2, base - h * 0.66, cw, h * 0.56, 3, P.ink, .1);
+    s += rect(cx - cw * 0.66, base - h * 0.72, cw * 1.32, h * 0.045, P.build[1]);
+  }
+  s += rect(x - w * 0.50, base - h * 0.76, w, h * 0.06, P.build[1]);
+  s += path(`M${n(x - w * 0.52)} ${n(base - h * 0.76)}L${n(x + w * 0.52)} ${n(base - h * 0.76)}L${n(x)} ${n(base - h)}Z`, P.build[2]);
+  return s;
+} };
+
+LM.colosseum = { name: 'Amphitheatre', fn(x, base, h, P) {
+  const w = h * 1.9;
+  let s = '';
+  const rows = 3;
+  s += path(`M${n(x - w / 2)} ${n(base)}L${n(x - w / 2)} ${n(base - h * 0.72)}Q${n(x)} ${n(base - h * 0.98)} ${n(x + w * 0.30)} ${n(base - h * 0.80)}L${n(x + w * 0.30)} ${n(base)}Z`, P.build[0]);
+  s += path(`M${n(x + w * 0.30)} ${n(base)}L${n(x + w * 0.30)} ${n(base - h * 0.80)}Q${n(x + w * 0.42)} ${n(base - h * 0.62)} ${n(x + w * 0.48)} ${n(base - h * 0.40)}L${n(x + w * 0.48)} ${n(base)}Z`, P.build[2]);
+  for (let rI = 0; rI < rows; rI++) {
+    const ry = base - h * (0.20 + rI * 0.22), ah = h * 0.15;
+    for (let i = 0; i < 12; i++) {
+      const ax = x - w * 0.47 + (w * 0.94 / 12) * i, aw = w * 0.048;
+      if (rI === 2 && i > 8) continue;
+      s += archShape(ax, ry - ah, aw, ah, P.ink, 'opacity=".20"');
+    }
+  }
+  return s;
+} };
+
+LM.lighthouse = { name: 'Lighthouse', fn(x, base, h, P) {
+  const w = h * 0.26;
+  let s = path(`M${n(x - w / 2)} ${n(base)}L${n(x + w / 2)} ${n(base)}L${n(x + w * 0.28)} ${n(base - h * 0.72)}L${n(x - w * 0.28)} ${n(base - h * 0.72)}Z`, P.build[0]);
+  for (let i = 0; i < 3; i++) s += path(`M${n(x - w * (0.5 - i * 0.075))} ${n(base - h * (0.18 * i))}L${n(x + w * (0.5 - i * 0.075))} ${n(base - h * (0.18 * i))}L${n(x + w * (0.5 - i * 0.075 - 0.04))} ${n(base - h * (0.18 * i + 0.10))}L${n(x - w * (0.5 - i * 0.075 - 0.04))} ${n(base - h * (0.18 * i + 0.10))}Z`, P.wood, 'opacity=".85"');
+  s += rect(x - w * 0.42, base - h * 0.78, w * 0.84, h * 0.06, P.build[2]);
+  s += rect(x - w * 0.26, base - h * 0.92, w * 0.52, h * 0.14, P.wood);
+  s += path(`M${n(x - w * 0.34)} ${n(base - h * 0.92)}L${n(x + w * 0.34)} ${n(base - h * 0.92)}L${n(x)} ${n(base - h)}Z`, P.roof);
+  s += path(`M${n(x + w * 0.26)} ${n(base - h * 0.86)}L${n(x + w * 1.9)} ${n(base - h * 0.96)}L${n(x + w * 1.9)} ${n(base - h * 0.72)}Z`, P.sun, 'opacity=".35"');
+  return s;
+} };
+
+LM.ferrisWheel = { name: 'Observation wheel', fn(x, base, h, P) {
+  const R = h * 0.42, cy = base - h * 0.52;
+  let s = line(x - R * 0.42, base, x, cy, P.build[2], h * 0.022);
+  s += line(x + R * 0.42, base, x, cy, P.build[2], h * 0.022);
+  s += circ(x, cy, R, 'none', `stroke="${P.build[2]}" stroke-width="${n(h * 0.02)}"`);
+  s += circ(x, cy, R * 0.86, 'none', `stroke="${P.build[2]}" stroke-width="${n(h * 0.012)}" opacity=".7"`);
+  for (let i = 0; i < 16; i++) {
+    const a = i / 16 * Math.PI * 2;
+    s += line(x, cy, x + Math.cos(a) * R, cy + Math.sin(a) * R, P.ink, h * 0.005, 'opacity=".35"');
+    s += circ(x + Math.cos(a) * R, cy + Math.sin(a) * R, h * 0.022, P.wood);
+  }
+  s += circ(x, cy, h * 0.03, P.build[1]);
+  return s;
+} };
+
+/* --- Middle East, South Asia, Africa --- */
+LM.mosque = { name: 'Mosque', fn(x, base, h, P) {
+  const w = h * 1.15;
+  let s = rect(x - w * 0.38, base - h * 0.34, w * 0.76, h * 0.34, P.build[0]);
+  s += archShape(x - w * 0.10, base - h * 0.26, w * 0.20, h * 0.26, P.ink, 'opacity=".20"');
+  s += path(`M${n(x - w * 0.30)} ${n(base - h * 0.34)}C${n(x - w * 0.30)} ${n(base - h * 0.74)} ${n(x + w * 0.30)} ${n(base - h * 0.74)} ${n(x + w * 0.30)} ${n(base - h * 0.34)}Z`, P.build[3]);
+  s += line(x, base - h * 0.755, x, base - h * 0.83, P.wood, h * 0.008);
+  s += path(`M${n(x - h * 0.02)} ${n(base - h * 0.83)}A${n(h * 0.02)} ${n(h * 0.02)} 0 1 0 ${n(x + h * 0.014)} ${n(base - h * 0.845)}A${n(h * 0.016)} ${n(h * 0.016)} 0 1 1 ${n(x - h * 0.02)} ${n(base - h * 0.83)}Z`, P.wood);
+  [-1, 1].forEach(k => {
+    const cx = x + k * w * 0.46, mw = w * 0.062;
+    s += rect(cx - mw / 2, base - h * 0.80, mw, h * 0.80, P.build[1]);
+    s += rect(cx - mw * 0.85, base - h * 0.60, mw * 1.7, h * 0.035, P.build[2]);
+    s += rect(cx - mw * 0.75, base - h * 0.82, mw * 1.5, h * 0.03, P.build[2]);
+    s += path(`M${n(cx - mw * 0.6)} ${n(base - h * 0.85)}L${n(cx + mw * 0.6)} ${n(base - h * 0.85)}L${n(cx)} ${n(base - h * 0.98)}Z`, P.wood);
+  });
+  [-1, 1].forEach(k => s += path(`M${n(x + k * w * 0.28)} ${n(base - h * 0.34)}C${n(x + k * w * 0.28)} ${n(base - h * 0.52)} ${n(x + k * w * 0.40)} ${n(base - h * 0.52)} ${n(x + k * w * 0.40)} ${n(base - h * 0.34)}Z`, P.build[2]));
+  return s;
+} };
+
+LM.taj = { name: 'Marble mausoleum', fn(x, base, h, P) {
+  const w = h * 1.28;
+  let s = rect(x - w * 0.52, base - h * 0.10, w * 1.04, h * 0.10, P.build[1]);
+  s += rect(x - w * 0.30, base - h * 0.44, w * 0.60, h * 0.34, P.build[0]);
+  s += path(`M${n(x - w * 0.11)} ${n(base - h * 0.44)}L${n(x - w * 0.11)} ${n(base - h * 0.28)}Q${n(x)} ${n(base - h * 0.42)} ${n(x + w * 0.11)} ${n(base - h * 0.28)}L${n(x + w * 0.11)} ${n(base - h * 0.44)}Z`, P.ink, 'opacity=".16"');
+  s += archShape(x - w * 0.115, base - h * 0.29, w * 0.23, h * 0.19, P.ink, 'opacity=".22"');
+  s += rect(x - w * 0.17, base - h * 0.50, w * 0.34, h * 0.06, P.build[1]);
+  s += path(`M${n(x - w * 0.18)} ${n(base - h * 0.50)}C${n(x - w * 0.22)} ${n(base - h * 0.82)} ${n(x + w * 0.22)} ${n(base - h * 0.82)} ${n(x + w * 0.18)} ${n(base - h * 0.50)}Z`, P.build[3]);
+  s += line(x, base - h * 0.79, x, base - h * 0.88, P.wood, h * 0.008);
+  s += circ(x, base - h * 0.885, h * 0.014, P.wood);
+  [-0.30, 0.30].forEach(o => {
+    s += rect(x + w * o - w * 0.05, base - h * 0.56, w * 0.10, h * 0.06, P.build[1]);
+    s += path(`M${n(x + w * o - w * 0.055)} ${n(base - h * 0.56)}C${n(x + w * o - w * 0.07)} ${n(base - h * 0.68)} ${n(x + w * o + w * 0.07)} ${n(base - h * 0.68)} ${n(x + w * o + w * 0.055)} ${n(base - h * 0.56)}Z`, P.build[3]);
+  });
+  [-0.46, -0.30, 0.30, 0.46].forEach((o, i) => {
+    if (i === 1 || i === 2) return;
+    const cx = x + w * o, mw = w * 0.05;
+    s += rect(cx - mw / 2, base - h * 0.72, mw, h * 0.62, P.build[1]);
+    [0.30, 0.50].forEach(b => s += rect(cx - mw * 0.8, base - h * b, mw * 1.6, h * 0.022, P.build[2]));
+    s += rect(cx - mw * 0.7, base - h * 0.74, mw * 1.4, h * 0.026, P.build[2]);
+    s += path(`M${n(cx - mw * 0.55)} ${n(base - h * 0.766)}C${n(cx - mw * 0.6)} ${n(base - h * 0.84)} ${n(cx + mw * 0.6)} ${n(base - h * 0.84)} ${n(cx + mw * 0.55)} ${n(base - h * 0.766)}Z`, P.build[3]);
+  });
+  return s;
+} };
+
+LM.charminar = { name: 'Four-minaret gate', fn(x, base, h, P) {
+  const w = h * 0.92;
+  let s = rect(x - w / 2, base - h * 0.52, w, h * 0.52, P.build[0]);
+  s += archShape(x - w * 0.20, base - h * 0.40, w * 0.40, h * 0.40, P.ink, 'opacity=".22"');
+  s += rect(x - w * 0.54, base - h * 0.58, w * 1.08, h * 0.07, P.build[1]);
+  s += rect(x - w * 0.40, base - h * 0.66, w * 0.80, h * 0.08, P.build[2]);
+  for (let i = 0; i < 7; i++) s += rect(x - w * 0.38 + (w * 0.76 / 7) * i, base - h * 0.72, w * 0.06, h * 0.06, P.build[1]);
+  [-1, 1].forEach(k => {
+    const cx = x + k * w * 0.42, mw = w * 0.13;
+    s += rect(cx - mw / 2, base - h * 0.80, mw, h * 0.28, P.build[1]);
+    s += rect(cx - mw * 0.7, base - h * 0.72, mw * 1.4, h * 0.03, P.build[2]);
+    s += rect(cx - mw * 0.62, base - h * 0.82, mw * 1.24, h * 0.03, P.build[2]);
+    s += path(`M${n(cx - mw * 0.5)} ${n(base - h * 0.85)}C${n(cx - mw * 0.6)} ${n(base - h * 0.95)} ${n(cx + mw * 0.6)} ${n(base - h * 0.95)} ${n(cx + mw * 0.5)} ${n(base - h * 0.85)}Z`, P.build[3]);
+    s += line(cx, base - h * 0.945, cx, base - h, P.wood, h * 0.006);
+  });
+  return s;
+} };
+
+LM.pyramids = { name: 'Pyramids', fn(x, base, h, P) {
+  const w = h * 1.9;
+  let s = tri(x - w * 0.10, base, x + w * 0.55, base, x + w * 0.22, base - h * 0.72, P.build[2]);
+  s += tri(x - w * 0.55, base, x + w * 0.12, base, x - w * 0.22, base - h, P.build[1]);
+  s += path(`M${n(x - w * 0.22)} ${n(base - h)}L${n(x + w * 0.12)} ${n(base)}L${n(x - w * 0.02)} ${n(base)}Z`, P.ink, 'opacity=".12"');
+  s += path(`M${n(x + w * 0.22)} ${n(base - h * 0.72)}L${n(x + w * 0.55)} ${n(base)}L${n(x + w * 0.40)} ${n(base)}Z`, P.ink, 'opacity=".10"');
+  return s;
+} };
+
+LM.obelisk = { name: 'Obelisk', fn(x, base, h, P) {
+  const w = h * 0.14;
+  let s = rect(x - w * 1.1, base - h * 0.05, w * 2.2, h * 0.05, P.stone);
+  s += path(`M${n(x - w / 2)} ${n(base - h * 0.05)}L${n(x + w / 2)} ${n(base - h * 0.05)}L${n(x + w * 0.30)} ${n(base - h * 0.86)}L${n(x - w * 0.30)} ${n(base - h * 0.86)}Z`, P.build[0]);
+  s += tri(x - w * 0.30, base - h * 0.86, x + w * 0.30, base - h * 0.86, x, base - h, P.build[2]);
+  return s;
+} };
+
+/* --- Americas & Oceania --- */
+LM.liberty = { name: 'Colossal statue', fn(x, base, h, P) {
+  const w = h * 0.42;
+  let s = path(`M${n(x - w * 0.55)} ${n(base)}L${n(x + w * 0.55)} ${n(base)}L${n(x + w * 0.34)} ${n(base - h * 0.30)}L${n(x - w * 0.34)} ${n(base - h * 0.30)}Z`, P.build[0]);
+  s += rect(x - w * 0.26, base - h * 0.40, w * 0.52, h * 0.10, P.build[1]);
+  s += path(`M${n(x - w * 0.20)} ${n(base - h * 0.40)}L${n(x + w * 0.20)} ${n(base - h * 0.40)}L${n(x + w * 0.13)} ${n(base - h * 0.78)}L${n(x - w * 0.13)} ${n(base - h * 0.78)}Z`, P.sage || P.leaf[0]);
+  s += path(`M${n(x + w * 0.06)} ${n(base - h * 0.76)}L${n(x + w * 0.22)} ${n(base - h * 0.94)}L${n(x + w * 0.16)} ${n(base - h * 0.96)}L${n(x + w * 0.01)} ${n(base - h * 0.74)}Z`, P.leaf[0]);
+  s += rect(x + w * 0.16, base - h * 0.99, w * 0.07, h * 0.05, P.wood);
+  s += path(`M${n(x + w * 0.155)} ${n(base - h)}Q${n(x + w * 0.195)} ${n(base - h * 1.07)} ${n(x + w * 0.235)} ${n(base - h)}Z`, P.sun);
+  s += circ(x - w * 0.02, base - h * 0.83, w * 0.075, P.leaf[0]);
+  for (let i = 0; i < 7; i++) {
+    const a = -Math.PI * 0.9 + i * (Math.PI * 0.8 / 6);
+    s += line(x - w * 0.02, base - h * 0.83, x - w * 0.02 + Math.cos(a) * w * 0.17, base - h * 0.83 + Math.sin(a) * w * 0.17, P.leaf[0], h * 0.008);
+  }
+  s += path(`M${n(x - w * 0.13)} ${n(base - h * 0.72)}L${n(x - w * 0.24)} ${n(base - h * 0.60)}L${n(x - w * 0.16)} ${n(base - h * 0.58)}Z`, P.leaf[1]);
+  return s;
+} };
+
+LM.redeemer = { name: 'Hilltop statue', fn(x, base, h, P) {
+  const w = h * 0.62;
+  let s = path(`M${n(x - w * 1.4)} ${n(base)}Q${n(x - w * 0.3)} ${n(base - h * 0.42)} ${n(x)} ${n(base - h * 0.44)}Q${n(x + w * 0.5)} ${n(base - h * 0.40)} ${n(x + w * 1.5)} ${n(base)}Z`, P.mountains[2]);
+  s += rect(x - w * 0.16, base - h * 0.56, w * 0.32, h * 0.12, P.build[0]);
+  s += rect(x - w * 0.075, base - h * 0.92, w * 0.15, h * 0.36, P.build[0]);
+  s += rect(x - w * 0.52, base - h * 0.86, w * 1.04, h * 0.075, P.build[0]);
+  s += circ(x, base - h * 0.955, w * 0.06, P.build[0]);
+  s += path(`M${n(x - w * 0.075)} ${n(base - h * 0.60)}L${n(x + w * 0.075)} ${n(base - h * 0.60)}L${n(x + w * 0.13)} ${n(base - h * 0.56)}L${n(x - w * 0.13)} ${n(base - h * 0.56)}Z`, P.build[0]);
+  return s;
+} };
+
+LM.operaHouse = { name: 'Shell roofs', fn(x, base, h, P) {
+  const w = h * 2.2;
+  let s = rect(x - w / 2, base - h * 0.14, w, h * 0.14, P.build[1]);
+  const shell = (cx, sw, sh, tilt, col) => path(
+    `M${n(cx - sw / 2)} ${n(base - h * 0.14)}C${n(cx - sw * 0.42)} ${n(base - h * 0.14 - sh * 0.72)} ${n(cx + sw * 0.10 * tilt)} ${n(base - h * 0.14 - sh)} ${n(cx + sw / 2)} ${n(base - h * 0.14 - sh * 0.10)}` +
+    `C${n(cx + sw * 0.20)} ${n(base - h * 0.14 - sh * 0.42)} ${n(cx - sw * 0.10)} ${n(base - h * 0.14 - sh * 0.30)} ${n(cx - sw / 2)} ${n(base - h * 0.14)}Z`, col);
+  s += shell(x - w * 0.28, w * 0.34, h * 0.52, 1, P.build[3]);
+  s += shell(x - w * 0.10, w * 0.40, h * 0.72, 1, P.build[0]);
+  s += shell(x + w * 0.12, w * 0.34, h * 0.86, 1, P.build[2]);
+  s += shell(x + w * 0.34, w * 0.26, h * 0.44, 1, P.build[1]);
+  s += rect(x - w / 2, base - h * 0.03, w, h * 0.03, P.water, 'opacity=".55"');
+  return s;
+} };
+
+LM.bridge = { name: 'Suspension bridge', fn(x, base, h, P) {
+  const w = h * 2.4, deck = base - h * 0.30, top = base - h;
+  let s = '';
+  [-1, 1].forEach(k => {
+    const cx = x + k * w * 0.26, tw = w * 0.035;
+    s += rect(cx - tw / 2, top, tw, deck - top + h * 0.30, P.wood);
+    s += rect(cx - tw * 1.2, top + h * 0.10, tw * 2.4, h * 0.035, P.wood);
+    s += rect(cx - tw * 1.2, top + h * 0.30, tw * 2.4, h * 0.035, P.wood);
+  });
+  s += path(`M${n(x - w / 2)} ${n(deck - h * 0.16)}Q${n(x - w * 0.26)} ${n(top + h * 0.02)} ${n(x - w * 0.26)} ${n(top + h * 0.02)}Q${n(x)} ${n(deck + h * 0.10)} ${n(x + w * 0.26)} ${n(top + h * 0.02)}Q${n(x + w * 0.36)} ${n(deck - h * 0.10)} ${n(x + w / 2)} ${n(deck - h * 0.16)}`, 'none', `stroke="${P.wood}" stroke-width="${n(h * 0.022)}"`);
+  for (let i = -10; i <= 10; i++) {
+    const px = x + i * w * 0.026;
+    const t = Math.abs(i) / 10;
+    const cy = lerp(deck + h * 0.10, top + h * 0.02, t * t);
+    s += line(px, cy, px, deck, P.wood, h * 0.007, 'opacity=".6"');
+  }
+  s += rect(x - w / 2, deck, w, h * 0.045, P.wood);
+  return s;
+} };
+
+LM.archMonument = { name: 'Triumphal arch', fn(x, base, h, P) {
+  const w = h * 1.0;
+  let s = rect(x - w / 2, base - h * 0.86, w, h * 0.86, P.build[0]);
+  s += archShape(x - w * 0.19, base - h * 0.62, w * 0.38, h * 0.62, P.ink, 'opacity=".26"');
+  s += rect(x - w * 0.54, base - h * 0.94, w * 1.08, h * 0.10, P.build[1]);
+  s += rect(x - w * 0.50, base - h * 0.99, w * 1.00, h * 0.05, P.build[2]);
+  [-0.34, 0.34].forEach(o => s += rect(x + w * o - w * 0.03, base - h * 0.80, w * 0.06, h * 0.44, P.ink, 'opacity=".13"'));
+  return s;
+} };
+
+/* --- generic fillers --- */
+LM.houses = { name: 'Old town roofs', fn(x, base, h, P, r) {
+  const w = h * 2.0, cols = 7;
+  let s = '';
+  for (let i = 0; i < cols; i++) {
+    const bw = w / cols * between(r, .8, 1), bx = x - w / 2 + (w / cols) * i, bh = h * between(r, .5, 1);
+    s += rect(bx, base - bh, bw, bh, P.build[i % 4]);
+    s += path(`M${n(bx - bw * 0.10)} ${n(base - bh)}L${n(bx + bw * 0.5)} ${n(base - bh - bw * 0.42)}L${n(bx + bw * 1.10)} ${n(base - bh)}Z`, r() > .5 ? P.roof : P.roofAlt);
+    s += windows(bx + bw * 0.18, base - bh + bh * 0.16, bw * 0.64, bh * 0.66, 2, 3, P.ink, .16);
+  }
+  return s;
+} };
+
+/* ---------- vegetation ---------- */
+const VEG = {
+  cherry(x, base, h, P, r) {
+    let s = line(x, base, x, base - h * 0.42, P.woodDark, h * 0.05);
+    for (let i = 0; i < 4; i++) {
+      const a = -0.9 + i * 0.6;
+      s += line(x, base - h * 0.36, x + Math.sin(a) * h * 0.34, base - h * 0.62, P.woodDark, h * 0.026);
+    }
+    for (let i = 0; i < 16; i++) {
+      const ang = r() * Math.PI * 2, rad = Math.pow(r(), .6) * h * 0.42;
+      s += circ(x + Math.cos(ang) * rad, base - h * 0.62 + Math.sin(ang) * rad * 0.55, h * between(r, .07, .15), pick(r, P.bloom), 'opacity=".92"');
+    }
+    return s;
+  },
+  pine(x, base, h, P, r) {
+    let s = rect(x - h * 0.025, base - h * 0.3, h * 0.05, h * 0.3, P.woodDark);
+    for (let i = 0; i < 4; i++) {
+      const t = i / 4, w = h * 0.52 * (1 - t * 0.6);
+      s += tri(x - w / 2, base - h * (0.22 + t * 0.24), x + w / 2, base - h * (0.22 + t * 0.24), x, base - h * (0.52 + t * 0.24), pick(r, P.leaf));
+    }
+    return s;
+  },
+  palm(x, base, h, P, r) {
+    let s = path(`M${n(x - h * 0.03)} ${n(base)}Q${n(x + h * 0.05)} ${n(base - h * 0.4)} ${n(x + h * 0.10)} ${n(base - h * 0.72)}L${n(x + h * 0.04)} ${n(base - h * 0.72)}Q${n(x - h * 0.01)} ${n(base - h * 0.4)} ${n(x - h * 0.06)} ${n(base)}Z`, P.woodDark);
+    for (let i = 0; i < 7; i++) {
+      const a = -Math.PI + i * (Math.PI / 6);
+      const ex = x + h * 0.07 + Math.cos(a) * h * 0.34, ey = base - h * 0.74 + Math.sin(a) * h * 0.20;
+      s += path(`M${n(x + h * 0.07)} ${n(base - h * 0.74)}Q${n((x + ex) / 2)} ${n(ey - h * 0.12)} ${n(ex)} ${n(ey)}Q${n((x + ex) / 2)} ${n(ey - h * 0.03)} ${n(x + h * 0.07)} ${n(base - h * 0.74)}Z`, pick(r, P.leaf));
+    }
+    return s;
+  },
+  broadleaf(x, base, h, P, r) {
+    let s = line(x, base, x, base - h * 0.36, P.woodDark, h * 0.055);
+    for (let i = 0; i < 5; i++) {
+      const ang = r() * Math.PI * 2, rad = Math.pow(r(), .7) * h * 0.30;
+      s += circ(x + Math.cos(ang) * rad, base - h * 0.60 + Math.sin(ang) * rad * 0.7, h * between(r, .20, .30), pick(r, P.leaf), 'opacity=".95"');
+    }
+    return s;
+  },
+  cypress(x, base, h, P, r) {
+    let s = rect(x - h * 0.02, base - h * 0.2, h * 0.04, h * 0.2, P.woodDark);
+    s += path(`M${n(x)} ${n(base - h)}Q${n(x + h * 0.15)} ${n(base - h * 0.4)} ${n(x)} ${n(base - h * 0.14)}Q${n(x - h * 0.15)} ${n(base - h * 0.4)} ${n(x)} ${n(base - h)}Z`, pick(r, P.leaf));
+    return s;
+  },
+  scrub(x, base, h, P, r) {
+    let s = '';
+    for (let i = 0; i < 3; i++) s += ell(x + (i - 1) * h * 0.22, base - h * 0.10, h * between(r, .12, .20), h * between(r, .08, .14), pick(r, P.leaf), 'opacity=".9"');
+    return s;
+  }
+};
+/* ============================================================
+   CITY KNOWLEDGE
+   lm  = landmark keys, in drawing priority (hero, distant, foreground)
+   veg = vegetation vocabulary   ter = terrain   wat = water   pal = palette
+   ============================================================ */
+const CITIES = {
+  /* --- Japan & East Asia --- */
+  'kyoto': { lm: ['pagoda', 'observationTower', 'templeHall'], veg: 'cherry', ter: 'mountain', wat: 'river', pal: 'eastasia' },
+  'tokyo': { lm: ['observationTower', 'skyline', 'templeHall'], veg: 'cherry', ter: 'flat', wat: 'bay', pal: 'eastasia' },
+  'osaka': { lm: ['castle', 'skyline', 'templeHall'], veg: 'cherry', ter: 'flat', wat: 'river', pal: 'eastasia' },
+  'nara': { lm: ['pagoda', 'templeHall', 'torii'], veg: 'cherry', ter: 'hill', wat: 'none', pal: 'eastasia' },
+  'hiroshima': { lm: ['torii', 'skyline', 'houses'], veg: 'cherry', ter: 'coast', wat: 'bay', pal: 'eastasia' },
+  'sapporo': { lm: ['clockTower', 'observationTower', 'houses'], veg: 'pine', ter: 'mountain', wat: 'river', pal: 'nordic' },
+  'seoul': { lm: ['observationTower', 'skyline', 'templeHall'], veg: 'broadleaf', ter: 'mountain', wat: 'river', pal: 'eastasia' },
+  'busan': { lm: ['skyline', 'bridge', 'templeHall'], veg: 'broadleaf', ter: 'coast', wat: 'bay', pal: 'eastasia' },
+  'beijing': { lm: ['templeHall', 'skyline', 'pagoda'], veg: 'broadleaf', ter: 'flat', wat: 'none', pal: 'eastasia' },
+  'shanghai': { lm: ['observationTower', 'skyline', 'houses'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'eastasia' },
+  'hong kong': { lm: ['skyline', 'observationTower', 'bridge'], veg: 'palm', ter: 'mountain', wat: 'bay', pal: 'eastasia' },
+  'taipei': { lm: ['burj', 'skyline', 'templeHall'], veg: 'palm', ter: 'mountain', wat: 'river', pal: 'eastasia' },
+  'hanoi': { lm: ['pagoda', 'houses', 'skyline'], veg: 'palm', ter: 'flat', wat: 'river', pal: 'tropical' },
+  'bangkok': { lm: ['stupa', 'templeHall', 'skyline'], veg: 'palm', ter: 'flat', wat: 'river', pal: 'tropical' },
+  'singapore': { lm: ['skyline', 'ferrisWheel', 'twinTowers'], veg: 'palm', ter: 'flat', wat: 'bay', pal: 'tropical' },
+  'kuala lumpur': { lm: ['twinTowers', 'skyline', 'mosque'], veg: 'palm', ter: 'flat', wat: 'river', pal: 'tropical' },
+  'jakarta': { lm: ['mosque', 'skyline', 'houses'], veg: 'palm', ter: 'flat', wat: 'river', pal: 'tropical' },
+  'manila': { lm: ['domedBasilica', 'skyline', 'houses'], veg: 'palm', ter: 'coast', wat: 'bay', pal: 'tropical' },
+  'kathmandu': { lm: ['stupa', 'pagoda', 'houses'], veg: 'pine', ter: 'mountain', wat: 'river', pal: 'andes' },
+  'colombo': { lm: ['stupa', 'skyline', 'lighthouse'], veg: 'palm', ter: 'coast', wat: 'bay', pal: 'tropical' },
+  'yangon': { lm: ['stupa', 'houses', 'skyline'], veg: 'palm', ter: 'flat', wat: 'river', pal: 'tropical' },
+
+  /* --- India --- */
+  'delhi': { lm: ['archMonument', 'mosque', 'skyline'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'desert' },
+  'new delhi': { lm: ['archMonument', 'mosque', 'skyline'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'desert' },
+  'mumbai': { lm: ['archMonument', 'skyline', 'gothic'], veg: 'palm', ter: 'coast', wat: 'bay', pal: 'tropical' },
+  'kolkata': { lm: ['domedBasilica', 'bridge', 'houses'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'tropical' },
+  'chennai': { lm: ['gopuram', 'lighthouse', 'skyline'], veg: 'palm', ter: 'coast', wat: 'bay', pal: 'tropical' },
+  'bengaluru': { lm: ['domedBasilica', 'gopuram', 'skyline'], veg: 'broadleaf', ter: 'hill', wat: 'none', pal: 'tropical' },
+  'bangalore': { lm: ['domedBasilica', 'gopuram', 'skyline'], veg: 'broadleaf', ter: 'hill', wat: 'none', pal: 'tropical' },
+  'hyderabad': { lm: ['charminar', 'mosque', 'skyline'], veg: 'broadleaf', ter: 'hill', wat: 'river', pal: 'desert' },
+  'agra': { lm: ['taj', 'mosque', 'houses'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'desert' },
+  'jaipur': { lm: ['charminar', 'castle', 'houses'], veg: 'scrub', ter: 'hill', wat: 'none', pal: 'desert' },
+  'varanasi': { lm: ['gopuram', 'stupa', 'houses'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'tropical' },
+  'amritsar': { lm: ['mosque', 'houses', 'stupa'], veg: 'broadleaf', ter: 'flat', wat: 'none', pal: 'desert' },
+  'pune': { lm: ['castle', 'gopuram', 'skyline'], veg: 'broadleaf', ter: 'hill', wat: 'river', pal: 'tropical' },
+  'ahmedabad': { lm: ['mosque', 'houses', 'bridge'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'desert' },
+  'kharagpur': { lm: ['gopuram', 'houses', 'skyline'], veg: 'broadleaf', ter: 'flat', wat: 'none', pal: 'tropical' },
+  'madurai': { lm: ['gopuram', 'houses', 'templeHall'], veg: 'palm', ter: 'flat', wat: 'river', pal: 'tropical' },
+  'kochi': { lm: ['lighthouse', 'houses', 'domedBasilica'], veg: 'palm', ter: 'coast', wat: 'bay', pal: 'tropical' },
+  'goa': { lm: ['domedBasilica', 'houses', 'lighthouse'], veg: 'palm', ter: 'coast', wat: 'bay', pal: 'tropical' },
+  'panaji': { lm: ['domedBasilica', 'houses', 'lighthouse'], veg: 'palm', ter: 'coast', wat: 'bay', pal: 'tropical' },
+  'shimla': { lm: ['clockTower', 'houses', 'gothic'], veg: 'pine', ter: 'mountain', wat: 'none', pal: 'andes' },
+  'kanpur': { lm: ['mosque', 'houses', 'skyline'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'tropical' },
+  'lucknow': { lm: ['mosque', 'charminar', 'houses'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'desert' },
+  'patna': { lm: ['stupa', 'houses', 'bridge'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'tropical' },
+  'bhopal': { lm: ['mosque', 'houses', 'skyline'], veg: 'broadleaf', ter: 'hill', wat: 'bay', pal: 'desert' },
+  'indore': { lm: ['gopuram', 'houses', 'skyline'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'tropical' },
+  'nagpur': { lm: ['stupa', 'houses', 'skyline'], veg: 'broadleaf', ter: 'flat', wat: 'none', pal: 'tropical' },
+  'chandigarh': { lm: ['skyline', 'houses', 'archMonument'], veg: 'broadleaf', ter: 'flat', wat: 'bay', pal: 'tropical' },
+  'srinagar': { lm: ['mosque', 'houses', 'castle'], veg: 'pine', ter: 'mountain', wat: 'bay', pal: 'andes' },
+  'leh': { lm: ['stupa', 'castle', 'houses'], veg: 'scrub', ter: 'mountain', wat: 'river', pal: 'andes' },
+  'jodhpur': { lm: ['castle', 'houses', 'gopuram'], veg: 'scrub', ter: 'hill', wat: 'none', pal: 'desert' },
+  'udaipur': { lm: ['castle', 'houses', 'gopuram'], veg: 'broadleaf', ter: 'hill', wat: 'bay', pal: 'desert' },
+  'jaisalmer': { lm: ['castle', 'houses', 'pyramids'], veg: 'scrub', ter: 'flat', wat: 'none', pal: 'desert' },
+  'guwahati': { lm: ['gopuram', 'houses', 'bridge'], veg: 'palm', ter: 'hill', wat: 'river', pal: 'tropical' },
+  'thiruvananthapuram': { lm: ['gopuram', 'houses', 'lighthouse'], veg: 'palm', ter: 'coast', wat: 'bay', pal: 'tropical' },
+  'mysuru': { lm: ['castle', 'gopuram', 'houses'], veg: 'broadleaf', ter: 'hill', wat: 'none', pal: 'tropical' },
+  'puri': { lm: ['gopuram', 'houses', 'lighthouse'], veg: 'palm', ter: 'coast', wat: 'bay', pal: 'tropical' },
+  'hampi': { lm: ['gopuram', 'houses', 'templeHall'], veg: 'scrub', ter: 'hill', wat: 'river', pal: 'desert' },
+  'khajuraho': { lm: ['gopuram', 'templeHall', 'houses'], veg: 'broadleaf', ter: 'flat', wat: 'none', pal: 'tropical' },
+  'bodh gaya': { lm: ['stupa', 'templeHall', 'houses'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'tropical' },
+  'rishikesh': { lm: ['gopuram', 'bridge', 'houses'], veg: 'pine', ter: 'mountain', wat: 'river', pal: 'andes' },
+  'haridwar': { lm: ['gopuram', 'houses', 'bridge'], veg: 'broadleaf', ter: 'hill', wat: 'river', pal: 'tropical' },
+  'darjeeling': { lm: ['stupa', 'houses', 'clockTower'], veg: 'pine', ter: 'mountain', wat: 'none', pal: 'andes' },
+  'gangtok': { lm: ['stupa', 'houses', 'pagoda'], veg: 'pine', ter: 'mountain', wat: 'none', pal: 'andes' },
+
+  /* --- Middle East & North Africa --- */
+  'dubai': { lm: ['burj', 'skyline', 'mosque'], veg: 'palm', ter: 'flat', wat: 'bay', pal: 'desert' },
+  'abu dhabi': { lm: ['mosque', 'skyline', 'burj'], veg: 'palm', ter: 'coast', wat: 'bay', pal: 'desert' },
+  'doha': { lm: ['skyline', 'mosque', 'burj'], veg: 'palm', ter: 'coast', wat: 'bay', pal: 'desert' },
+  'riyadh': { lm: ['skyline', 'mosque', 'houses'], veg: 'palm', ter: 'flat', wat: 'none', pal: 'desert' },
+  'istanbul': { lm: ['mosque', 'bridge', 'houses'], veg: 'cypress', ter: 'hill', wat: 'bay', pal: 'mediterranean' },
+  'cairo': { lm: ['pyramids', 'mosque', 'obelisk'], veg: 'palm', ter: 'flat', wat: 'river', pal: 'desert' },
+  'marrakech': { lm: ['mosque', 'houses', 'castle'], veg: 'palm', ter: 'mountain', wat: 'none', pal: 'desert' },
+  'casablanca': { lm: ['mosque', 'houses', 'lighthouse'], veg: 'palm', ter: 'coast', wat: 'bay', pal: 'desert' },
+  'jerusalem': { lm: ['mosque', 'castle', 'houses'], veg: 'cypress', ter: 'hill', wat: 'none', pal: 'mediterranean' },
+  'tehran': { lm: ['mosque', 'skyline', 'houses'], veg: 'cypress', ter: 'mountain', wat: 'none', pal: 'desert' },
+
+  /* --- Europe --- */
+  'paris': { lm: ['eiffel', 'gothic', 'domedBasilica'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'euro' },
+  'london': { lm: ['clockTower', 'ferrisWheel', 'domedBasilica'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'euro' },
+  'rome': { lm: ['colosseum', 'domedBasilica', 'obelisk'], veg: 'cypress', ter: 'hill', wat: 'river', pal: 'mediterranean' },
+  'venice': { lm: ['domedBasilica', 'clockTower', 'canalHouses'], veg: 'cypress', ter: 'flat', wat: 'bay', pal: 'mediterranean' },
+  'florence': { lm: ['domedBasilica', 'clockTower', 'houses'], veg: 'cypress', ter: 'hill', wat: 'river', pal: 'mediterranean' },
+  'milan': { lm: ['gothic', 'skyline', 'houses'], veg: 'broadleaf', ter: 'flat', wat: 'none', pal: 'mediterranean' },
+  'naples': { lm: ['castle', 'houses', 'domedBasilica'], veg: 'cypress', ter: 'mountain', wat: 'bay', pal: 'mediterranean' },
+  'barcelona': { lm: ['spires', 'gothic', 'houses'], veg: 'palm', ter: 'coast', wat: 'bay', pal: 'mediterranean' },
+  'madrid': { lm: ['archMonument', 'domedBasilica', 'houses'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'mediterranean' },
+  'lisbon': { lm: ['castle', 'bridge', 'houses'], veg: 'palm', ter: 'hill', wat: 'river', pal: 'mediterranean' },
+  'porto': { lm: ['clockTower', 'bridge', 'houses'], veg: 'broadleaf', ter: 'hill', wat: 'river', pal: 'mediterranean' },
+  'amsterdam': { lm: ['canalHouses', 'windmill', 'gothic'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'nordic' },
+  'berlin': { lm: ['archMonument', 'observationTower', 'gothic'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'euro' },
+  'munich': { lm: ['gothic', 'clockTower', 'houses'], veg: 'pine', ter: 'mountain', wat: 'river', pal: 'euro' },
+  'cologne': { lm: ['gothic', 'bridge', 'houses'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'euro' },
+  'hamburg': { lm: ['clockTower', 'bridge', 'canalHouses'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'nordic' },
+  'prague': { lm: ['castle', 'gothic', 'bridge'], veg: 'broadleaf', ter: 'hill', wat: 'river', pal: 'euro' },
+  'vienna': { lm: ['gothic', 'ferrisWheel', 'castle'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'euro' },
+  'budapest': { lm: ['gothic', 'bridge', 'castle'], veg: 'broadleaf', ter: 'hill', wat: 'river', pal: 'euro' },
+  'moscow': { lm: ['onionChurch', 'skyline', 'castle'], veg: 'pine', ter: 'flat', wat: 'river', pal: 'nordic' },
+  'saint petersburg': { lm: ['domedBasilica', 'onionChurch', 'bridge'], veg: 'pine', ter: 'flat', wat: 'river', pal: 'nordic' },
+  'athens': { lm: ['parthenon', 'houses', 'domedBasilica'], veg: 'cypress', ter: 'hill', wat: 'none', pal: 'mediterranean' },
+  'edinburgh': { lm: ['castle', 'clockTower', 'houses'], veg: 'pine', ter: 'hill', wat: 'none', pal: 'nordic' },
+  'dublin': { lm: ['clockTower', 'bridge', 'houses'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'nordic' },
+  'copenhagen': { lm: ['canalHouses', 'castle', 'ferrisWheel'], veg: 'broadleaf', ter: 'flat', wat: 'bay', pal: 'nordic' },
+  'stockholm': { lm: ['castle', 'houses', 'bridge'], veg: 'pine', ter: 'coast', wat: 'bay', pal: 'nordic' },
+  'oslo': { lm: ['gothic', 'houses', 'lighthouse'], veg: 'pine', ter: 'mountain', wat: 'bay', pal: 'nordic' },
+  'helsinki': { lm: ['domedBasilica', 'houses', 'lighthouse'], veg: 'pine', ter: 'coast', wat: 'bay', pal: 'nordic' },
+  'reykjavik': { lm: ['spires', 'houses', 'lighthouse'], veg: 'scrub', ter: 'mountain', wat: 'bay', pal: 'nordic' },
+  'zurich': { lm: ['clockTower', 'houses', 'castle'], veg: 'pine', ter: 'mountain', wat: 'river', pal: 'nordic' },
+  'geneva': { lm: ['clockTower', 'houses', 'bridge'], veg: 'pine', ter: 'mountain', wat: 'river', pal: 'nordic' },
+  'brussels': { lm: ['gothic', 'houses', 'archMonument'], veg: 'broadleaf', ter: 'flat', wat: 'none', pal: 'euro' },
+  'krakow': { lm: ['castle', 'gothic', 'houses'], veg: 'broadleaf', ter: 'hill', wat: 'river', pal: 'euro' },
+  'warsaw': { lm: ['artDeco', 'castle', 'houses'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'euro' },
+
+  /* --- Americas --- */
+  'new york': { lm: ['artDeco', 'liberty', 'bridge'], veg: 'broadleaf', ter: 'flat', wat: 'bay', pal: 'euro' },
+  'chicago': { lm: ['artDeco', 'skyline', 'ferrisWheel'], veg: 'broadleaf', ter: 'flat', wat: 'bay', pal: 'euro' },
+  'san francisco': { lm: ['bridge', 'skyline', 'houses'], veg: 'pine', ter: 'hill', wat: 'bay', pal: 'euro' },
+  'los angeles': { lm: ['skyline', 'observationTower', 'houses'], veg: 'palm', ter: 'hill', wat: 'bay', pal: 'mediterranean' },
+  'seattle': { lm: ['observationTower', 'skyline', 'ferrisWheel'], veg: 'pine', ter: 'mountain', wat: 'bay', pal: 'nordic' },
+  'washington': { lm: ['obelisk', 'domedBasilica', 'archMonument'], veg: 'cherry', ter: 'flat', wat: 'river', pal: 'euro' },
+  'boston': { lm: ['domedBasilica', 'skyline', 'bridge'], veg: 'broadleaf', ter: 'coast', wat: 'bay', pal: 'nordic' },
+  'toronto': { lm: ['observationTower', 'skyline', 'houses'], veg: 'broadleaf', ter: 'flat', wat: 'bay', pal: 'nordic' },
+  'vancouver': { lm: ['skyline', 'bridge', 'houses'], veg: 'pine', ter: 'mountain', wat: 'bay', pal: 'nordic' },
+  'montreal': { lm: ['gothic', 'skyline', 'houses'], veg: 'broadleaf', ter: 'hill', wat: 'river', pal: 'nordic' },
+  'mexico city': { lm: ['domedBasilica', 'archMonument', 'pyramids'], veg: 'broadleaf', ter: 'mountain', wat: 'none', pal: 'andes' },
+  'rio de janeiro': { lm: ['redeemer', 'skyline', 'bridge'], veg: 'palm', ter: 'mountain', wat: 'bay', pal: 'tropical' },
+  'sao paulo': { lm: ['skyline', 'gothic', 'houses'], veg: 'broadleaf', ter: 'hill', wat: 'river', pal: 'tropical' },
+  'buenos aires': { lm: ['obelisk', 'domedBasilica', 'houses'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'euro' },
+  'lima': { lm: ['domedBasilica', 'houses', 'lighthouse'], veg: 'palm', ter: 'coast', wat: 'bay', pal: 'andes' },
+  'santiago': { lm: ['skyline', 'domedBasilica', 'houses'], veg: 'broadleaf', ter: 'mountain', wat: 'river', pal: 'andes' },
+  'bogota': { lm: ['domedBasilica', 'houses', 'skyline'], veg: 'broadleaf', ter: 'mountain', wat: 'none', pal: 'andes' },
+  'cusco': { lm: ['domedBasilica', 'houses', 'castle'], veg: 'scrub', ter: 'mountain', wat: 'none', pal: 'andes' },
+  'havana': { lm: ['domedBasilica', 'castle', 'houses'], veg: 'palm', ter: 'coast', wat: 'bay', pal: 'mediterranean' },
+
+  /* --- Oceania & Africa --- */
+  'sydney': { lm: ['operaHouse', 'bridge', 'skyline'], veg: 'palm', ter: 'coast', wat: 'bay', pal: 'mediterranean' },
+  'melbourne': { lm: ['skyline', 'clockTower', 'ferrisWheel'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'mediterranean' },
+  'auckland': { lm: ['observationTower', 'skyline', 'bridge'], veg: 'palm', ter: 'coast', wat: 'bay', pal: 'tropical' },
+  'cape town': { lm: ['skyline', 'houses', 'lighthouse'], veg: 'scrub', ter: 'mountain', wat: 'bay', pal: 'mediterranean' },
+  'nairobi': { lm: ['skyline', 'houses', 'scrubTree'], veg: 'scrub', ter: 'hill', wat: 'none', pal: 'tropical' },
+  'lagos': { lm: ['skyline', 'bridge', 'houses'], veg: 'palm', ter: 'coast', wat: 'bay', pal: 'tropical' },
+  'addis ababa': { lm: ['domedBasilica', 'houses', 'skyline'], veg: 'broadleaf', ter: 'mountain', wat: 'none', pal: 'andes' }
+};
+
+/* country-level fallbacks, keyed by ISO-2 */
+const COUNTRY_TRAITS = {
+  JP: { lm: ['pagoda', 'observationTower', 'templeHall'], veg: 'cherry', ter: 'mountain', wat: 'river', pal: 'eastasia' },
+  CN: { lm: ['templeHall', 'skyline', 'pagoda'], veg: 'broadleaf', ter: 'mountain', wat: 'river', pal: 'eastasia' },
+  KR: { lm: ['templeHall', 'skyline', 'observationTower'], veg: 'broadleaf', ter: 'mountain', wat: 'river', pal: 'eastasia' },
+  TW: { lm: ['skyline', 'templeHall', 'observationTower'], veg: 'palm', ter: 'mountain', wat: 'river', pal: 'eastasia' },
+  TH: { lm: ['stupa', 'templeHall', 'houses'], veg: 'palm', ter: 'flat', wat: 'river', pal: 'tropical' },
+  VN: { lm: ['pagoda', 'houses', 'skyline'], veg: 'palm', ter: 'hill', wat: 'river', pal: 'tropical' },
+  ID: { lm: ['mosque', 'houses', 'skyline'], veg: 'palm', ter: 'mountain', wat: 'river', pal: 'tropical' },
+  MY: { lm: ['twinTowers', 'mosque', 'houses'], veg: 'palm', ter: 'flat', wat: 'river', pal: 'tropical' },
+  PH: { lm: ['domedBasilica', 'houses', 'skyline'], veg: 'palm', ter: 'coast', wat: 'bay', pal: 'tropical' },
+  IN: { lm: ['gopuram', 'houses', 'skyline'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'tropical' },
+  NP: { lm: ['stupa', 'pagoda', 'houses'], veg: 'pine', ter: 'mountain', wat: 'river', pal: 'andes' },
+  LK: { lm: ['stupa', 'houses', 'lighthouse'], veg: 'palm', ter: 'coast', wat: 'bay', pal: 'tropical' },
+  BD: { lm: ['mosque', 'houses', 'skyline'], veg: 'palm', ter: 'flat', wat: 'river', pal: 'tropical' },
+  PK: { lm: ['mosque', 'houses', 'castle'], veg: 'scrub', ter: 'mountain', wat: 'river', pal: 'desert' },
+  AE: { lm: ['burj', 'mosque', 'skyline'], veg: 'palm', ter: 'flat', wat: 'bay', pal: 'desert' },
+  SA: { lm: ['mosque', 'skyline', 'houses'], veg: 'palm', ter: 'flat', wat: 'none', pal: 'desert' },
+  QA: { lm: ['skyline', 'mosque', 'houses'], veg: 'palm', ter: 'coast', wat: 'bay', pal: 'desert' },
+  TR: { lm: ['mosque', 'houses', 'bridge'], veg: 'cypress', ter: 'hill', wat: 'bay', pal: 'mediterranean' },
+  IR: { lm: ['mosque', 'houses', 'skyline'], veg: 'cypress', ter: 'mountain', wat: 'none', pal: 'desert' },
+  IL: { lm: ['mosque', 'houses', 'castle'], veg: 'cypress', ter: 'hill', wat: 'bay', pal: 'mediterranean' },
+  EG: { lm: ['mosque', 'obelisk', 'houses'], veg: 'palm', ter: 'flat', wat: 'river', pal: 'desert' },
+  MA: { lm: ['mosque', 'houses', 'castle'], veg: 'palm', ter: 'mountain', wat: 'none', pal: 'desert' },
+  ZA: { lm: ['skyline', 'houses', 'lighthouse'], veg: 'scrub', ter: 'mountain', wat: 'bay', pal: 'mediterranean' },
+  KE: { lm: ['skyline', 'houses', 'lighthouse'], veg: 'scrub', ter: 'hill', wat: 'none', pal: 'tropical' },
+  NG: { lm: ['skyline', 'bridge', 'houses'], veg: 'palm', ter: 'coast', wat: 'bay', pal: 'tropical' },
+  FR: { lm: ['gothic', 'houses', 'archMonument'], veg: 'broadleaf', ter: 'hill', wat: 'river', pal: 'euro' },
+  GB: { lm: ['clockTower', 'houses', 'gothic'], veg: 'broadleaf', ter: 'hill', wat: 'river', pal: 'nordic' },
+  IE: { lm: ['castle', 'houses', 'bridge'], veg: 'broadleaf', ter: 'hill', wat: 'river', pal: 'nordic' },
+  DE: { lm: ['gothic', 'houses', 'clockTower'], veg: 'pine', ter: 'hill', wat: 'river', pal: 'euro' },
+  NL: { lm: ['canalHouses', 'windmill', 'gothic'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'nordic' },
+  BE: { lm: ['gothic', 'houses', 'clockTower'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'euro' },
+  IT: { lm: ['domedBasilica', 'clockTower', 'houses'], veg: 'cypress', ter: 'hill', wat: 'river', pal: 'mediterranean' },
+  ES: { lm: ['gothic', 'houses', 'domedBasilica'], veg: 'palm', ter: 'hill', wat: 'river', pal: 'mediterranean' },
+  PT: { lm: ['castle', 'houses', 'bridge'], veg: 'palm', ter: 'hill', wat: 'river', pal: 'mediterranean' },
+  GR: { lm: ['parthenon', 'houses', 'domedBasilica'], veg: 'cypress', ter: 'hill', wat: 'bay', pal: 'mediterranean' },
+  CH: { lm: ['clockTower', 'houses', 'castle'], veg: 'pine', ter: 'mountain', wat: 'river', pal: 'nordic' },
+  AT: { lm: ['gothic', 'castle', 'houses'], veg: 'pine', ter: 'mountain', wat: 'river', pal: 'euro' },
+  CZ: { lm: ['castle', 'gothic', 'bridge'], veg: 'broadleaf', ter: 'hill', wat: 'river', pal: 'euro' },
+  PL: { lm: ['castle', 'gothic', 'houses'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'euro' },
+  HU: { lm: ['gothic', 'bridge', 'castle'], veg: 'broadleaf', ter: 'hill', wat: 'river', pal: 'euro' },
+  RU: { lm: ['onionChurch', 'castle', 'houses'], veg: 'pine', ter: 'flat', wat: 'river', pal: 'nordic' },
+  SE: { lm: ['castle', 'houses', 'bridge'], veg: 'pine', ter: 'coast', wat: 'bay', pal: 'nordic' },
+  NO: { lm: ['gothic', 'houses', 'lighthouse'], veg: 'pine', ter: 'mountain', wat: 'bay', pal: 'nordic' },
+  DK: { lm: ['canalHouses', 'castle', 'houses'], veg: 'broadleaf', ter: 'flat', wat: 'bay', pal: 'nordic' },
+  FI: { lm: ['domedBasilica', 'houses', 'lighthouse'], veg: 'pine', ter: 'coast', wat: 'bay', pal: 'nordic' },
+  IS: { lm: ['spires', 'houses', 'lighthouse'], veg: 'scrub', ter: 'mountain', wat: 'bay', pal: 'nordic' },
+  US: { lm: ['artDeco', 'skyline', 'houses'], veg: 'broadleaf', ter: 'hill', wat: 'river', pal: 'euro' },
+  CA: { lm: ['observationTower', 'skyline', 'houses'], veg: 'pine', ter: 'mountain', wat: 'river', pal: 'nordic' },
+  MX: { lm: ['domedBasilica', 'pyramids', 'houses'], veg: 'palm', ter: 'mountain', wat: 'none', pal: 'andes' },
+  BR: { lm: ['skyline', 'domedBasilica', 'houses'], veg: 'palm', ter: 'mountain', wat: 'bay', pal: 'tropical' },
+  AR: { lm: ['obelisk', 'domedBasilica', 'houses'], veg: 'broadleaf', ter: 'flat', wat: 'river', pal: 'euro' },
+  CL: { lm: ['domedBasilica', 'houses', 'skyline'], veg: 'broadleaf', ter: 'mountain', wat: 'river', pal: 'andes' },
+  PE: { lm: ['domedBasilica', 'houses', 'castle'], veg: 'scrub', ter: 'mountain', wat: 'none', pal: 'andes' },
+  CO: { lm: ['domedBasilica', 'houses', 'skyline'], veg: 'broadleaf', ter: 'mountain', wat: 'none', pal: 'andes' },
+  CU: { lm: ['domedBasilica', 'castle', 'houses'], veg: 'palm', ter: 'coast', wat: 'bay', pal: 'mediterranean' },
+  AU: { lm: ['skyline', 'houses', 'lighthouse'], veg: 'palm', ter: 'coast', wat: 'bay', pal: 'mediterranean' },
+  NZ: { lm: ['observationTower', 'houses', 'lighthouse'], veg: 'pine', ter: 'mountain', wat: 'bay', pal: 'nordic' }
+};
+
+const DEFAULT_TRAITS = { lm: ['skyline', 'houses', 'observationTower'], veg: 'broadleaf', ter: 'hill', wat: 'river', pal: 'euro' };
+
+/* Resolve what to draw for a place. Falls back city -> country -> latitude. */
+function traitsFor(place) {
+  const key = normalise(place.name);
+  let t = CITIES[key];
+  if (!t) {
+    const first = key.split(' ')[0];
+    for (const k in CITIES) if (k === first || k.split(' ')[0] === first) { t = CITIES[k]; break; }
+  }
+  let source = t ? 'city' : '';
+  if (!t) { t = COUNTRY_TRAITS[place.cc]; source = t ? 'country' : ''; }
+  if (!t) { t = DEFAULT_TRAITS; source = 'generic'; }
+  t = Object.assign({}, t);
+  if (source !== 'city') {
+    const a = Math.abs(place.lat);
+    if (a < 23.5) { t.pal = t.pal === 'desert' ? 'desert' : 'tropical'; if (t.veg === 'broadleaf') t.veg = 'palm'; }
+    else if (a > 55) { t.pal = 'nordic'; t.veg = 'pine'; }
+  }
+  t.source = source;
+  t.lm = t.lm.filter(k => LM[k]);
+  while (t.lm.length < 3) t.lm.push(['skyline', 'houses', 'observationTower'].find(k => !t.lm.includes(k)) || 'houses');
+  return t;
+}
+/* ============================================================
+   THE COMPOSER
+   Lays out one plate: paper, geometry, terrain, city, landmarks, type.
+   Everything scales off a "band" — the artwork block anchored to the
+   bottom edge — so a 9:16 plate and a 20:9 plate keep the same
+   proportions and simply gain sky.
+   ============================================================ */
+
+const TITLE_FONT = "Futura,'Century Gothic','Avenir Next',Optima,'Trebuchet MS','Segoe UI',system-ui,sans-serif";
+
+function ridgePath(W, H, yTop, amp, r, wob) {
+  const a1 = r() * 6.28, a2 = r() * 6.28, steps = 26;
+  let d = `M0 ${n(H)}L0 ${n(yTop + amp * 0.8)}`;
+  for (let i = 0; i <= steps; i++) {
+    const t = i / steps;
+    const y = yTop + amp * (0.55 + 0.45 * (0.62 * Math.sin(a1 + t * 6.1 * wob) + 0.38 * Math.sin(a2 + t * 13.4 * wob)));
+    d += `L${n(W * t)} ${n(y)}`;
+  }
+  return d + `L${n(W)} ${n(H)}Z`;
+}
+
+function geoShapes(W, H, bandTop, bandH, P, r, layer) {
+  const SH = P.shapes;
+  let s = '';
+  const put = (svg) => { s += svg; };
+  if (layer === 'back') {
+    put(archShape(-W * 0.10, bandTop + bandH * 0.02, W * 0.34, H, SH[6], 'opacity=".30"'));
+    put(archShape(W * 0.80 + r() * W * 0.06, bandTop + bandH * 0.10, W * 0.30, H, SH[7], 'opacity=".34"'));
+    put(rect(W * 0.02, bandTop + bandH * 0.30, W * 0.16, H, SH[5], 'opacity=".22"'));
+    put(circ(W * (0.12 + r() * 0.06), bandTop + bandH * 0.62, W * 0.24, SH[0], 'opacity=".18"'));
+    put(rect(W * 0.62, bandTop + bandH * 0.38, W * 0.22, W * 0.22, SH[3], 'opacity=".20"'));
+  } else {
+    put(circ(W * (0.10 + r() * 0.08), H - bandH * 0.10, bandH * 0.20, SH[1], 'opacity=".26"'));
+    put(circ(W * (0.30 + r() * 0.10), H - bandH * 0.02, bandH * 0.16, SH[4], 'opacity=".24"'));
+    put(quarter(0, H - bandH * 0.26, bandH * 0.20, SH[2], 'ne', 'opacity=".22"'));
+    put(rect(W * 0.02, H - bandH * 0.30, W * 0.14, W * 0.14, SH[0], 'opacity=".20"'));
+    put(rect(W * 0.70 + r() * W * 0.08, H - bandH * 0.16, W * 0.26, W * 0.26, SH[6], 'opacity=".18"'));
+    put(archShape(W * 0.40 + r() * W * 0.10, H - bandH * 0.20, W * 0.18, bandH * 0.24, SH[3], 'opacity=".20"'));
+    put(circ(W * 0.86, H - bandH * 0.30, bandH * 0.09, SH[2], 'opacity=".22"'));
+  }
+  return `<g style="mix-blend-mode:multiply">${s}</g>`;
+}
+
+function projectRoads(roads, lat, lon, W, H, radiusKm) {
+  const cosl = Math.cos(lat * Math.PI / 180);
+  const spanM = radiusKm * 2000;
+  const scale = Math.max(W, H) / spanM * 1.02;
+  const out = [];
+  for (const way of roads) {
+    let d = '';
+    for (let i = 0; i < way.p.length; i++) {
+      const dy = (way.p[i][0] - lat) * 111320;
+      const dx = (way.p[i][1] - lon) * 111320 * cosl;
+      d += (i ? 'L' : 'M') + n(W / 2 + dx * scale) + ' ' + n(H / 2 - dy * scale);
+    }
+    if (d) out.push({ c: way.c, d });
+  }
+  return out;
+}
+
+const ROAD_WEIGHT = { motorway: 2.6, trunk: 2.2, primary: 1.8, secondary: 1.35, tertiary: 1.05, unclassified: .78, residential: .70, living_street: .55, pedestrian: .5, rail: 1.5 };
+
+function roadLayer(projected, W, tint, opacity, railTint) {
+  const base = W * 0.0016;
+  const groups = {};
+  for (const p of projected) (groups[p.c] = groups[p.c] || []).push(p.d);
+  let s = '';
+  for (const cls in groups) {
+    const isRail = cls === 'rail';
+    s += `<path d="${groups[cls].join('')}" fill="none" stroke="${isRail ? railTint : tint}" stroke-width="${n(base * (ROAD_WEIGHT[cls] || .8))}" stroke-linecap="round" stroke-linejoin="round"${isRail ? ` stroke-dasharray="${n(W * 0.006)} ${n(W * 0.004)}"` : ''}/>`;
+  }
+  return `<g opacity="${opacity}">${s}</g>`;
+}
+
+/* ---------- the illustrated plate ---------- */
+function buildPoster(cfg) {
+  const { W, H, place, traits, lms, opts, roads } = cfg;
+  const P = PALETTES[traits.pal] || PALETTES.euro;
+  const r = rngFrom(cfg.seed);
+  const bandH = Math.min(H * 0.82, W * 1.62), bandTop = H - bandH;
+  const horizon = bandTop + bandH * 0.42;
+  const skyBase = bandTop + bandH * 0.575;
+  const townBase = bandTop + bandH * 0.80;
+  const coast = traits.ter === 'coast', mountainous = traits.ter === 'mountain' || traits.ter === 'hill';
+
+  let s = '';
+  s += `<rect width="${W}" height="${H}" fill="${P.paper}"/>`;
+  s += `<rect width="${W}" height="${n(H * 0.62)}" fill="url(#skyGrad)"/>`;
+
+  /* sun */
+  s += circ(W * 0.76, horizon - bandH * 0.16, bandH * 0.155, P.sun, 'opacity=".55"');
+
+  /* geometry behind */
+  s += geoShapes(W, H, bandTop, bandH, P, r, 'back');
+
+  /* map, if it rides behind the artwork */
+  if (opts.mapMode === 'behind' && roads && roads.length)
+    s += roadLayer(projectRoads(roads, place.lat, place.lon, W, H, opts.radius), W, P.ink, '.16', P.ink);
+
+  /* terrain */
+  if (mountainous) {
+    const amp = bandH * (traits.ter === 'mountain' ? 0.17 : 0.10);
+    s += path(ridgePath(W, H, horizon - amp * 1.5, amp, r, 1.0), P.mountains[0], 'opacity=".85"');
+    s += path(ridgePath(W, H, horizon - amp * 0.9, amp * 0.9, r, 1.3), P.mountains[1], 'opacity=".9"');
+    s += path(ridgePath(W, H, horizon - amp * 0.3, amp * 0.7, r, 1.7), P.mountains[2], 'opacity=".95"');
+  } else if (coast) {
+    s += rect(0, horizon - bandH * 0.02, W, bandH * 0.10, P.water, 'opacity=".55"');
+    for (let i = 0; i < 5; i++) s += line(W * r(), horizon + bandH * 0.02 + i * bandH * 0.014, W * r() * 0.4 + W * 0.1, horizon + bandH * 0.02 + i * bandH * 0.014, P.ink, W * 0.002, 'opacity=".12"');
+    s += path(ridgePath(W, H, horizon + bandH * 0.02, bandH * 0.05, r, 1.4), P.mountains[1], 'opacity=".55"');
+  } else {
+    s += path(ridgePath(W, H, horizon + bandH * 0.02, bandH * 0.045, r, 1.2), P.mountains[0], 'opacity=".55"');
+  }
+
+  /* distant landmark */
+  if (lms[1]) s += LM[lms[1]].fn(W * 0.665, skyBase, bandH * 0.34, P, r);
+
+  /* mid-ground blocks */
+  s += (function () {
+    let t = '', x = -W * 0.04;
+    let i = 0;
+    while (x < W * 1.02) {
+      const bw = W * between(r, .045, .085), bh = bandH * between(r, .05, .155);
+      t += rect(x, skyBase - bh, bw, bh, P.build[i % 4]);
+      t += windows(x + bw * 0.14, skyBase - bh + bh * 0.12, bw * 0.72, bh * 0.76, 2, Math.max(2, Math.round(bh / (bandH * 0.03))), P.ink, .10);
+      x += bw * between(r, 1.02, 1.2); i++;
+    }
+    return t;
+  })();
+
+  /* river & bridges */
+  if (traits.wat === 'river') {
+    const ry = skyBase + bandH * 0.03;
+    s += path(`M0 ${n(ry)}Q${n(W * 0.3)} ${n(ry - bandH * 0.02)} ${n(W * 0.62)} ${n(ry + bandH * 0.01)}T${n(W)} ${n(ry - bandH * 0.01)}L${n(W)} ${n(ry + bandH * 0.075)}Q${n(W * 0.5)} ${n(ry + bandH * 0.10)} 0 ${n(ry + bandH * 0.065)}Z`, P.water, 'opacity=".75"');
+    for (let i = 0; i < 3; i++) {
+      const bx = W * (0.22 + i * 0.26), by = ry + bandH * (0.01 + i * 0.022);
+      s += path(`M${n(bx - W * 0.11)} ${n(by + bandH * 0.012)}Q${n(bx)} ${n(by - bandH * 0.018)} ${n(bx + W * 0.11)} ${n(by + bandH * 0.012)}`, 'none', `stroke="${i === 1 ? P.wood : P.stone}" stroke-width="${n(bandH * 0.011)}"`);
+      s += path(`M${n(bx - W * 0.11)} ${n(by + bandH * 0.030)}Q${n(bx)} ${n(by + bandH * 0.000)} ${n(bx + W * 0.11)} ${n(by + bandH * 0.030)}`, 'none', `stroke="${i === 1 ? P.wood : P.stone}" stroke-width="${n(bandH * 0.008)}" opacity=".8"`);
+    }
+  } else if (traits.wat === 'bay' && !coast) {
+    s += rect(0, skyBase + bandH * 0.02, W, bandH * 0.07, P.water, 'opacity=".6"');
+  }
+
+  /* town roofs */
+  s += (function () {
+    let t = '';
+    for (let i = 0; i < 16; i++) {
+      const x = W * (i / 16) + W * between(r, -.02, .02), bw = W * between(r, .06, .11), bh = bandH * between(r, .05, .09);
+      const y = townBase - bandH * between(r, 0, .07);
+      t += rect(x, y - bh, bw, bh, P.build[i % 4]);
+      t += path(`M${n(x - bw * 0.12)} ${n(y - bh)}L${n(x + bw * 0.5)} ${n(y - bh - bw * 0.34)}L${n(x + bw * 1.12)} ${n(y - bh)}Z`, r() > .5 ? P.roof : P.roofAlt);
+      t += windows(x + bw * 0.18, y - bh * 0.8, bw * 0.64, bh * 0.6, 2, 2, P.ink, .14);
+    }
+    return t;
+  })();
+
+  /* mid trees */
+  const vg = VEG[traits.veg] || VEG.broadleaf;
+  for (let i = 0; i < 9; i++) s += vg(W * between(r, .02, .98), townBase + bandH * between(r, -.02, .03), bandH * between(r, .07, .12), P, r);
+
+  /* hero landmark */
+  if (lms[0]) s += LM[lms[0]].fn(W * 0.235, bandTop + bandH * 0.615, bandH * 0.455, P, r);
+
+  /* foreground landmark */
+  if (lms[2]) s += LM[lms[2]].fn(W * 0.75, H - bandH * 0.10, bandH * 0.26, P, r);
+
+  /* foreground planting */
+  for (let i = 0; i < 5; i++) s += vg(W * between(r, -.02, .35), H - bandH * between(r, -.02, .10), bandH * between(r, .14, .22), P, r);
+  for (let i = 0; i < 3; i++) s += vg(W * between(r, .70, 1.02), H - bandH * between(r, -.02, .06), bandH * between(r, .12, .18), P, r);
+
+  /* geometry in front */
+  s += geoShapes(W, H, bandTop, bandH, P, r, 'front');
+
+  /* type */
+  const title = place.name.toUpperCase();
+  const trackTitle = 0.34;
+  const fs = Math.min(W * 0.082, (W * 0.80) / Math.max(1, title.length * (0.62 + trackTitle)));
+  const ty = Math.max(H * 0.105, bandTop * 0.60);
+  s += `<text x="${n(W / 2 - fs * trackTitle / 2)}" y="${n(ty)}" text-anchor="middle" font-family="${TITLE_FONT}" font-size="${n(fs)}" letter-spacing="${n(fs * trackTitle)}" fill="${P.ink}">${esc(title)}</text>`;
+  if (opts.coords) {
+    const sub = (place.country || '').toUpperCase() + '   ' + coordLine(place.lat, place.lon, false);
+    const fs2 = Math.min(W * 0.021, (W * 0.74) / Math.max(1, sub.length * 0.78));
+    s += `<text x="${n(W / 2 - fs2 * 0.16 / 2)}" y="${n(ty + fs * 0.92)}" text-anchor="middle" font-family="${TITLE_FONT}" font-size="${n(fs2)}" letter-spacing="${n(fs2 * 0.16)}" fill="${P.ink}" opacity=".62">${esc(sub)}</text>`;
+  }
+
+  const defs =
+    `<defs><linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">` +
+    `<stop offset="0" stop-color="${P.sky[0]}" stop-opacity=".55"/><stop offset="1" stop-color="${P.sky[1]}" stop-opacity="0"/></linearGradient>` +
+    `<filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="4" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter></defs>`;
+
+  const grain = opts.grain ? `<rect width="${W}" height="${H}" filter="url(#grain)" opacity=".14" style="mix-blend-mode:multiply"/>` : '';
+  return wrapSvg(W, H, defs + s + grain);
+}
+
+/* ---------- the map plate ---------- */
+function buildMapPoster(cfg) {
+  const { W, H, place, traits, opts, roads } = cfg;
+  const P = PALETTES[traits.pal] || PALETTES.euro;
+  const paper = '#E7DFD3', ink = '#4A3128', rail = '#2E2622';
+  let s = `<rect width="${W}" height="${H}" fill="${paper}"/>`;
+  if (roads && roads.length)
+    s += roadLayer(projectRoads(roads, place.lat, place.lon, W, H, opts.radius), W, ink, '.85', rail);
+  const title = place.name.toUpperCase();
+  const track = 0.20;
+  const fs = Math.min(W * 0.135, (W * 0.88) / Math.max(1, title.length * (0.70 + track)));
+  const ty = H - H * 0.055;
+  s += `<rect y="${n(H - H * 0.20)}" width="${W}" height="${n(H * 0.20)}" fill="${paper}" opacity=".82"/>`;
+  s += `<text x="${n(W / 2 - fs * track / 2)}" y="${n(ty)}" text-anchor="middle" font-family="${TITLE_FONT}" font-size="${n(fs)}" font-weight="700" letter-spacing="${n(fs * track)}" fill="#3B2A22">${esc(title)}</text>`;
+  const sub = (place.country || '').toUpperCase() + '   ' + coordLine(place.lat, place.lon, false);
+  const fs2 = Math.min(W * 0.024, (W * 0.8) / Math.max(1, sub.length * 0.8));
+  s += `<text x="${n(W / 2 - fs2 * 0.16 / 2)}" y="${n(ty + fs * 0.42)}" text-anchor="middle" font-family="${TITLE_FONT}" font-size="${n(fs2)}" letter-spacing="${n(fs2 * 0.16)}" fill="#3B2A22" opacity=".7">${esc(sub)}</text>`;
+  const grain = opts.grain ? `<rect width="${W}" height="${H}" filter="url(#grain)" opacity=".12" style="mix-blend-mode:multiply"/>` : '';
+  const defs = `<defs><filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="4" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter></defs>`;
+  return wrapSvg(W, H, defs + s + grain);
+}
+
+const wrapSvg = (W, H, body) =>
+  `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" shape-rendering="geometricPrecision">${body}</svg>`;
+
+/* ---------- OpenStreetMap streets ---------- */
+const OVERPASS = ['https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter', 'https://overpass.private.coffee/api/interpreter'];
+
+function overpassQuery(lat, lon, radiusKm) {
+  const dLat = radiusKm / 111.32;
+  const dLon = radiusKm / (111.32 * Math.cos(lat * Math.PI / 180));
+  const bbox = `${(lat - dLat).toFixed(4)},${(lon - dLon).toFixed(4)},${(lat + dLat).toFixed(4)},${(lon + dLon).toFixed(4)}`;
+  let classes = 'motorway|trunk|primary|secondary|tertiary|unclassified|residential|living_street';
+  if (radiusKm >= 7) classes = 'motorway|trunk|primary|secondary|tertiary|unclassified|residential';
+  if (radiusKm >= 12) classes = 'motorway|trunk|primary|secondary|tertiary|unclassified';
+  return `[out:json][timeout:60];\n(\n  way["highway"~"^(${classes})$"](${bbox});\n  way["railway"~"^(rail|light_rail|subway|narrow_gauge)$"](${bbox});\n);\nout geom;`;
+}
+
+/* Accepts Overpass raw JSON (out geom) or GeoJSON from overpass-turbo. */
+function parseRoadData(text) {
+  const j = JSON.parse(text);
+  const ways = [];
+  if (Array.isArray(j.elements)) {
+    for (const el of j.elements) {
+      if (!el.geometry || el.geometry.length < 2) continue;
+      const cls = el.tags && el.tags.railway ? 'rail' : (el.tags && el.tags.highway) || 'residential';
+      ways.push({ c: cls, p: el.geometry.map(g => [g.lat, g.lon]) });
+    }
+  } else if (j.type === 'FeatureCollection') {
+    for (const f of j.features || []) {
+      const g = f.geometry, pr = f.properties || {};
+      if (!g) continue;
+      const cls = pr.railway ? 'rail' : pr.highway || 'residential';
+      const add = (co) => { if (co && co.length > 1) ways.push({ c: cls, p: co.map(c => [c[1], c[0]]) }); };
+      if (g.type === 'LineString') add(g.coordinates);
+      else if (g.type === 'MultiLineString') (g.coordinates || []).forEach(add);
+    }
+  }
+  return ways;
+}
+
+/* How far the loaded data actually reaches from the plate's centre, in km. */
+function roadsExtentKm(ways, lat, lon) {
+  const cosl = Math.cos(lat * Math.PI / 180);
+  let m = 0;
+  for (const w of ways) for (const p of w.p) {
+    m = Math.max(m, Math.abs(p[0] - lat) * 111.32, Math.abs(p[1] - lon) * 111.32 * cosl);
+  }
+  return Math.max(0.5, m);
+}
+
+async function fetchRoads(lat, lon, radiusKm) {
+  const q = overpassQuery(lat, lon, radiusKm);
+  let lastErr;
+  for (const url of OVERPASS) {
+    try {
+      const res = await fetch(url, { method: 'POST', body: 'data=' + encodeURIComponent(q), headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
+      if (!res.ok) throw new Error('status ' + res.status);
+      const data = await res.json();
+      const ways = [];
+      for (const el of (data.elements || [])) {
+        if (!el.geometry || el.geometry.length < 2) continue;
+        const cls = el.tags && el.tags.railway ? 'rail' : (el.tags && el.tags.highway) || 'residential';
+        ways.push({ c: cls, p: el.geometry.map(g => [g.lat, g.lon]) });
+      }
+      return ways;
+    } catch (e) { lastErr = e; }
+  }
+  throw lastErr || new Error('No map server responded.');
+}
+
+/* ============================================================
+   UI
+   ============================================================ */
+const S = {
+  place: null, traits: null, lms: [], device: DEVICES[0], group: '9:16',
+  mapMode: 'off', radius: 4, roads: null, roadsKey: '', seed: 1,
+  coords: true, grain: true, ascii: false, svg: '', busy: false
+};
+
+function fileBase() {
+  if (!S.place) return '';
+  const p = S.place;
+  const coords = coordLine(p.lat, p.lon, S.ascii);
+  const clean = (t) => String(t).replace(/[\\/:*?"<>|]/g, '').trim();
+  if (S.ascii) return `${clean(p.name)}_${clean(p.country).replace(/ /g, '-')}_${coords.replace(/ /g, '_')}`.replace(/ /g, '-');
+  return `${clean(p.name)} \u2014 ${clean(p.country)} \u00B7 ${coords}`;
+}
+
+function setLocked() {
+  const on = !!S.place;
+  ['step2', 'step3', 'step4', 'step5'].forEach(id => $(id).dataset.locked = on ? '0' : '1');
+}
+
+function renderFormats() {
+  const box = $('formats');
+  box.innerHTML = GROUPS.map(g => {
+    const d = DEVICES.find(x => x.group === g);
+    const hh = 34, ww = Math.round(hh * d.w / d.h);
+    return `<button class="fmt" data-group="${g}" aria-pressed="${S.group === g}">
+      <span class="glyph"><b style="width:${ww}px;height:${hh}px"></b></span>
+      <span class="t">${g}</span><span class="d">${d.w}\u00D7${d.h}</span></button>`;
+  }).join('');
+  box.querySelectorAll('.fmt').forEach(b => b.onclick = () => {
+    S.group = b.dataset.group;
+    S.device = DEVICES.find(d => d.group === S.group);
+    renderFormats(); renderDevices(); draw();
+  });
+}
+function renderDevices() {
+  $('deviceSel').innerHTML = DEVICES.filter(d => d.group === S.group)
+    .map(d => `<option value="${d.id}" ${d.id === S.device.id ? 'selected' : ''}>${d.label} — ${d.w}\u00D7${d.h}</option>`).join('');
+}
+
+function renderChips() {
+  const keys = Object.keys(LM).sort((a, b) => LM[a].name.localeCompare(LM[b].name));
+  const ordered = S.traits ? S.traits.lm.concat(keys.filter(k => !S.traits.lm.includes(k))) : keys;
+  $('lmChips').innerHTML = ordered.map(k =>
+    `<button class="chip" data-k="${k}" aria-pressed="${S.lms.includes(k)}">${esc(LM[k].name)}</button>`).join('');
+  $('lmChips').querySelectorAll('.chip').forEach(b => b.onclick = () => {
+    const k = b.dataset.k, i = S.lms.indexOf(k);
+    if (i >= 0) S.lms.splice(i, 1);
+    else { if (S.lms.length >= 3) S.lms.shift(); S.lms.push(k); }
+    renderChips(); draw();
+  });
+  $('lmSub').textContent = S.traits && S.traits.source === 'city'
+    ? 'Chosen for this city. Swap any of them — up to three, drawn back to front.'
+    : 'No landmark set on file for this city, so these are typical for the region. Swap freely.';
+}
+
+function draw() {
+  if (!S.place) return;
+  const d = S.device;
+  const cfg = {
+    W: d.w, H: d.h, place: S.place, traits: S.traits, lms: S.lms, seed: S.seed,
+    roads: S.roads,
+    opts: { coords: S.coords, grain: S.grain, mapMode: S.mapMode, radius: S.radius }
+  };
+  S.svg = S.mapMode === 'only' ? buildMapPoster(cfg) : buildPoster(cfg);
+  const stage = $('stageBody');
+  stage.className = 'plate';
+  stage.innerHTML = S.svg;
+  $('fileStrip').hidden = false; $('exports').hidden = false;
+  $('fileName').textContent = fileBase() + '.png';
+  $('plateNo').textContent = 'PLATE ' + String((S.seed % 89) + 10) + ' / ' + S.place.name.toUpperCase();
+  $('stageNote').textContent = `${d.label} · ${d.w}\u00D7${d.h} px`;
+}
+
+async function ensureRoads() {
+  if (S.mapMode === 'off' || !S.place) return;
+  const key = `${S.place.lat},${S.place.lon},${S.radius}`;
+  if (S.roadsKey.startsWith('file:') && S.roads) return;
+  if (key === S.roadsKey && S.roads) return;
+  $('mapNote').className = 'note';
+  $('mapNote').innerHTML = '<span class="spin"></span>Pulling streets from OpenStreetMap…';
+  try {
+    const ways = await fetchRoads(S.place.lat, S.place.lon, S.radius);
+    S.roads = ways; S.roadsKey = key;
+    $('mapNote').className = 'note good';
+    $('mapNote').textContent = `${ways.length.toLocaleString()} street and rail segments drawn.`;
+  } catch (e) {
+    S.roads = null;
+    $('mapNote').className = 'note bad';
+    $('mapNote').textContent = 'No answer from the map servers \u2014 a page opened straight from storage isn\'t allowed to make requests. Use the query and file loader below instead.';
+  }
+  draw();
+}
+
+/* ---------- search ---------- */
+let lastResults = [];
+async function runSearch() {
+  const q = $('cityIn').value.trim();
+  const expect = $('countryIn').value.trim();
+  if (!q) { $('findNote').className = 'note bad'; $('findNote').textContent = 'Type a city name first.'; return; }
+  $('findBtn').disabled = true;
+  $('findNote').className = 'note';
+  $('findNote').innerHTML = '<span class="spin"></span>Looking up ' + esc(q) + '\u2026';
+  $('results').innerHTML = '';
+
+  let res = [], offline = false;
+  try { res = await geocode(q); }
+  catch (e) { offline = true; }
+  if (!res.length) res = localSearch(q);
+
+  $('findBtn').disabled = false;
+
+  if (!res.length) {
+    $('findNote').className = 'note bad';
+    $('findNote').innerHTML = offline
+      ? 'No connection to the place lookup, and ' + esc(q) + ' isn\'t in the built-in list. Enter its coordinates by hand below and everything else still works.'
+      : 'No place called \u201C' + esc(q) + '\u201D. Check the spelling, or try the local name.';
+    $('manualBox').hidden = false;
+    $('latIn').focus();
+    return;
+  }
+
+  lastResults = res;
+  const prefix = offline ? 'Working offline from the built-in list. ' : '';
+  const top = res[0];
+  const inCountry = expect ? res.filter(x => countryMatches(expect, x)) : [];
+  if (expect && countryMatches(expect, top)) {
+    $('findNote').className = 'note good';
+    $('findNote').innerHTML = prefix + 'Checks out \u2014 ' + esc(top.name) + ' is in ' + esc(top.country) + '. Pick the exact one:';
+  } else if (expect && inCountry.length) {
+    $('findNote').className = 'note bad';
+    $('findNote').innerHTML = prefix + 'The best match for ' + esc(q) + ' is in ' + esc(top.country) + ', not ' + esc(expect) + ' \u2014 but there is one in ' + esc(inCountry[0].country) + '. Both are below, ' + esc(expect) + ' first:';
+  } else if (expect) {
+    $('findNote').className = 'note bad';
+    $('findNote').innerHTML = prefix + 'No ' + esc(q) + ' in ' + esc(expect) + '. The closest matches are in ' + esc([...new Set(res.slice(0, 3).map(x => x.country))].join(', ')) + ':';
+  } else {
+    $('findNote').className = offline ? 'note bad' : 'note';
+    $('findNote').innerHTML = prefix + res.length + ' match' + (res.length > 1 ? 'es' : '') + '. Pick the one you mean:';
+  }
+
+  const ordered = expect ? inCountry.concat(res.filter(x => !inCountry.includes(x))) : res;
+  $('results').innerHTML = ordered.map(x => {
+    const idx = res.indexOf(x);
+    const ok = expect && countryMatches(expect, x);
+    return '<li><button data-i="' + idx + '" class="' + (ok ? 'match' : '') + '">' +
+      '<span class="r-name">' + esc(x.name) + (ok ? ' <span class="flagmark">\u2713</span>' : '') +
+      ' <em>' + esc(x.admin ? x.admin + ', ' : '') + esc(x.country) + '</em></span>' +
+      '<span class="r-meta">' + coordLine(x.lat, x.lon, false) + (x.pop ? ' \u00B7 pop. ' + x.pop.toLocaleString() : '') + '</span></button></li>';
+  }).join('');
+  $('results').querySelectorAll('button').forEach(b => b.onclick = () => choose(lastResults[+b.dataset.i], b));
+}
+
+function useManual() {
+  const lat = parseFloat($('latIn').value), lon = parseFloat($('lonIn').value);
+  const name = $('cityIn').value.trim();
+  if (!name) { $('findNote').className = 'note bad'; $('findNote').textContent = 'Fill in the city name above first.'; return; }
+  if (!isFinite(lat) || Math.abs(lat) > 90 || !isFinite(lon) || Math.abs(lon) > 180) {
+    $('findNote').className = 'note bad';
+    $('findNote').textContent = 'Latitude runs \u221290 to 90 and longitude \u2212180 to 180, as decimals.';
+    return;
+  }
+  $('findNote').className = 'note good';
+  $('findNote').textContent = 'Using ' + name + ' at ' + coordLine(lat, lon, false) + '.';
+  choose({ name, country: $('countryIn').value.trim(), cc: '', lat, lon, admin: '', pop: 0 }, null);
+}
+
+function choose(place, btn) {
+  S.place = place;
+  S.traits = traitsFor(place);
+  S.lms = S.traits.lm.slice(0, 3);
+  S.seed = seedFrom(place.name + place.country + place.lat);
+  S.roads = null; S.roadsKey = '';
+  $('results').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
+  $('cityIn').value = place.name;
+  setLocked();
+  renderChips();
+  refreshQuery();
+  draw();
+  ensureRoads();
+  if (window.innerWidth < 860) $('stageBody').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+/* ---------- export ---------- */
+function downloadBlob(blob, filename) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 2000);
+}
+function exportSVG() {
+  if (!S.svg) return;
+  downloadBlob(new Blob([S.svg], { type: 'image/svg+xml;charset=utf-8' }), fileBase() + '.svg');
+}
+function exportPNG() {
+  if (!S.svg) return;
+  const btn = $('pngBtn'), was = btn.textContent;
+  btn.disabled = true; btn.textContent = 'Rendering…';
+  const blob = new Blob([S.svg], { type: 'image/svg+xml;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const img = new Image();
+  img.onload = () => {
+    const c = document.createElement('canvas');
+    c.width = S.device.w; c.height = S.device.h;
+    const ctx = c.getContext('2d');
+    ctx.drawImage(img, 0, 0, c.width, c.height);
+    URL.revokeObjectURL(url);
+    c.toBlob(b => {
+      if (b) downloadBlob(b, fileBase() + '.png');
+      btn.disabled = false; btn.textContent = was;
+    }, 'image/png');
+  };
+  img.onerror = () => {
+    URL.revokeObjectURL(url);
+    btn.disabled = false; btn.textContent = was;
+    $('stageNote').textContent = 'The PNG render failed in this browser. The SVG download holds the same artwork at any size.';
+  };
+  img.src = url;
+}
+
+/* ---------- wiring ---------- */
+$('findBtn').onclick = runSearch;
+$('manualToggle').onclick = () => {
+  const box = $('manualBox');
+  box.hidden = !box.hidden;
+  $('manualToggle').textContent = box.hidden ? 'Enter coordinates by hand' : 'Hide manual coordinates';
+  if (!box.hidden) $('latIn').focus();
+};
+$('manualUse').onclick = useManual;
+$('lonIn').addEventListener('keydown', e => { if (e.key === 'Enter') useManual(); });
+$('latIn').addEventListener('keydown', e => { if (e.key === 'Enter') useManual(); });
+$('cityIn').addEventListener('keydown', e => { if (e.key === 'Enter') runSearch(); });
+$('countryIn').addEventListener('keydown', e => { if (e.key === 'Enter') runSearch(); });
+$('deviceSel').onchange = e => { S.device = DEVICES.find(d => d.id === e.target.value); draw(); };
+$('mapSeg').querySelectorAll('button').forEach(b => b.onclick = () => {
+  S.mapMode = b.dataset.v;
+  $('mapSeg').querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+  $('radiusWrap').hidden = S.mapMode === 'off';
+  $('mapSub').textContent = S.mapMode === 'only'
+    ? 'A plate of nothing but the street grid, rail lines and the city name.'
+    : 'Real streets and rail lines, drawn from OpenStreetMap.';
+  $('offlineMap').hidden = S.mapMode === 'off';
+  if (S.mapMode === 'off') { $('mapNote').textContent = ''; draw(); } else ensureRoads();
+  refreshQuery();
+});
+
+function refreshQuery() {
+  if (!S.place) return;
+  $('qBox').value = overpassQuery(S.place.lat, S.place.lon, S.radius);
+}
+$('qBtn').onclick = () => {
+  refreshQuery();
+  const box = $('qBox');
+  box.hidden = !box.hidden;
+  $('qBtn').textContent = box.hidden ? 'Show the Overpass query' : 'Hide the query';
+  if (!box.hidden) { box.focus(); box.select(); }
+};
+$('fileBtn').onclick = () => $('mapFile').click();
+$('mapFile').onchange = (e) => {
+  const f = e.target.files && e.target.files[0];
+  if (!f || !S.place) return;
+  const fr = new FileReader();
+  fr.onload = () => {
+    try {
+      const ways = parseRoadData(String(fr.result));
+      if (!ways.length) throw new Error('empty');
+      S.roads = ways;
+      S.radius = roadsExtentKm(ways, S.place.lat, S.place.lon);
+      S.roadsKey = `file:${f.name}`;
+      $('mapNote').className = 'note good';
+      $('mapNote').textContent = `${ways.length.toLocaleString()} segments loaded from ${f.name}, reaching ${S.radius.toFixed(1)} km out.`;
+      draw();
+    } catch (err) {
+      $('mapNote').className = 'note bad';
+      $('mapNote').textContent = 'That file has no road geometry in it. Export from overpass-turbo as GeoJSON, or save the raw JSON of a query ending in "out geom;".';
+    }
+  };
+  fr.onerror = () => { $('mapNote').className = 'note bad'; $('mapNote').textContent = 'The file could not be read.'; };
+  fr.readAsText(f);
+  e.target.value = '';
+};
+$('radiusSel').onchange = e => { S.radius = +e.target.value; refreshQuery(); ensureRoads(); };
+$('optCoords').onchange = e => { S.coords = e.target.checked; draw(); };
+$('optGrain').onchange = e => { S.grain = e.target.checked; draw(); };
+$('optAscii').onchange = e => { S.ascii = e.target.checked; if (S.place) $('fileName').textContent = fileBase() + '.png'; };
+$('reseedBtn').onclick = () => { S.seed = (S.seed * 1664525 + 1013904223) >>> 0; draw(); };
+$('pngBtn').onclick = exportPNG;
+$('svgBtn').onclick = exportSVG;
+
+$('gazList').innerHTML = GAZ.map(g => '<option value="' + esc(g.name) + '">' + esc(g.country) + '</option>').join('');
+renderFormats(); renderDevices(); setLocked();
+
+</script>
+</body>
+</html>
