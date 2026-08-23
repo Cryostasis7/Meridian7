@@ -221,7 +221,7 @@ textarea:focus{border-color:var(--coral)}
 
     <section class="step" id="step3" data-locked="1">
       <div class="eyebrow"><i>3</i> Landmarks</div>
-      <p class="sub" id="lmSub">Pick up to three. They're drawn as silhouettes, not photographs.</p>
+      <p class="sub" id="lmSub">Pick up to five. They're drawn as silhouettes of their type, not photographs.</p>
       <div class="chips" id="lmChips"></div>
     </section>
 
@@ -1455,6 +1455,87 @@ function traitsFor(place) {
   while (t.lm.length < 3) t.lm.push(['skyline', 'houses', 'observationTower'].find(k => !t.lm.includes(k)) || 'houses');
   return t;
 }
+
+/* ============================================================
+   NAMED LANDMARKS
+   Real landmarks for cities where the set is well established, each
+   paired with the silhouette that carries its shape. The drawing is a
+   type, not a portrait: "Tō-ji Pagoda" prints as a five-tier pagoda.
+   ============================================================ */
+const NAMED = {
+  'kyoto': [['Tō-ji Pagoda', 'pagoda'], ['Kyoto Tower', 'observationTower'], ['Kiyomizu-dera', 'templeHall'], ['Fushimi Inari torii', 'torii'], ['Kinkaku-ji', 'templeHall'], ['Nijō Castle', 'castle'], ['Heian Shrine torii', 'torii'], ['Gion machiya streets', 'houses'], ['Togetsukyō Bridge', 'bridge'], ['Kyoto Station block', 'skyline']],
+  'tokyo': [['Tokyo Tower', 'observationTower'], ['Tokyo Skytree', 'burj'], ['Sensō-ji', 'templeHall'], ['Asakusa pagoda', 'pagoda'], ['Meiji Shrine torii', 'torii'], ['Imperial Palace', 'castle'], ['Rainbow Bridge', 'bridge'], ['Shinjuku towers', 'skyline'], ['Zōjō-ji', 'templeHall'], ['Shitamachi rooftops', 'houses']],
+  'delhi': [['India Gate', 'archMonument'], ['Qutub Minar', 'obelisk'], ['Red Fort', 'castle'], ['Jama Masjid', 'mosque'], ["Humayun's Tomb", 'taj'], ['Lotus Temple', 'spires'], ['Rashtrapati Bhavan', 'domedBasilica'], ['Akshardham', 'gopuram'], ['Connaught Place', 'houses'], ['Old Delhi rooftops', 'houses']],
+  'new delhi': [['India Gate', 'archMonument'], ['Qutub Minar', 'obelisk'], ['Rashtrapati Bhavan', 'domedBasilica'], ['Jama Masjid', 'mosque'], ["Humayun's Tomb", 'taj'], ['Lotus Temple', 'spires'], ['Red Fort', 'castle'], ['Akshardham', 'gopuram'], ['Connaught Place', 'houses'], ['Central Secretariat', 'domedBasilica']],
+  'mumbai': [['Gateway of India', 'archMonument'], ['Chhatrapati Shivaji Terminus', 'gothic'], ['Marine Drive skyline', 'skyline'], ['Haji Ali Dargah', 'mosque'], ['Bandra–Worli Sea Link', 'bridge'], ['Rajabai Clock Tower', 'clockTower'], ['Siddhivinayak Temple', 'gopuram'], ['Bombay High Court', 'gothic'], ['Elephanta Caves', 'templeHall'], ['Colaba chawls', 'houses']],
+  'kolkata': [['Victoria Memorial', 'domedBasilica'], ['Howrah Bridge', 'bridge'], ['Dakshineswar Temple', 'gopuram'], ["St Paul's Cathedral", 'gothic'], ['Shaheed Minar', 'obelisk'], ['Nakhoda Masjid', 'mosque'], ['Marble Palace', 'domedBasilica'], ['Prinsep Ghat', 'archMonument'], ['Kalighat Temple', 'gopuram'], ['North Kolkata rooftops', 'houses']],
+  'chennai': [['Kapaleeshwarar Temple', 'gopuram'], ['Madras Lighthouse', 'lighthouse'], ['Santhome Basilica', 'gothic'], ['Fort St George', 'castle'], ['Ripon Building', 'domedBasilica'], ['Chennai Central', 'clockTower'], ['Parthasarathy Temple', 'gopuram'], ['Napier Bridge', 'bridge'], ['Valluvar Kottam', 'templeHall'], ['Mylapore streets', 'houses']],
+  'bengaluru': [['Vidhana Soudha', 'domedBasilica'], ['Bull Temple', 'gopuram'], ['Bangalore Palace', 'castle'], ['UB City towers', 'skyline'], ['Lalbagh Glass House', 'houses'], ["Tipu Sultan's Palace", 'templeHall'], ["St Mary's Basilica", 'gothic'], ['ISKCON Temple', 'gopuram'], ['Kempegowda Tower', 'obelisk'], ['Malleshwaram streets', 'houses']],
+  'hyderabad': [['Charminar', 'charminar'], ['Golconda Fort', 'castle'], ['Mecca Masjid', 'mosque'], ['Chowmahalla Palace', 'domedBasilica'], ['Birla Mandir', 'gopuram'], ['Hussain Sagar Buddha', 'stupa'], ['Falaknuma Palace', 'domedBasilica'], ['Qutb Shahi Tombs', 'taj'], ['HITEC City', 'skyline'], ['Old City bazaars', 'houses']],
+  'agra': [['Taj Mahal', 'taj'], ['Agra Fort', 'castle'], ['Fatehpur Sikri', 'mosque'], ['Itmad-ud-Daulah', 'taj'], ["Akbar's Tomb", 'taj'], ['Jama Masjid', 'mosque'], ['Chini ka Rauza', 'taj'], ['Yamuna bridges', 'bridge'], ['Mehtab Bagh', 'houses'], ['Kinari Bazaar', 'houses']],
+  'jaipur': [['Hawa Mahal', 'charminar'], ['Amber Fort', 'castle'], ['City Palace', 'domedBasilica'], ['Jantar Mantar', 'obelisk'], ['Nahargarh Fort', 'castle'], ['Albert Hall Museum', 'domedBasilica'], ['Birla Mandir', 'gopuram'], ['Jal Mahal', 'houses'], ['Isarlat tower', 'obelisk'], ['Pink City bazaars', 'houses']],
+  'varanasi': [['Kashi Vishwanath', 'gopuram'], ['Dashashwamedh Ghat', 'houses'], ['Sarnath Stupa', 'stupa'], ['Alamgir Mosque', 'mosque'], ['Ramnagar Fort', 'castle'], ['Malviya Bridge', 'bridge'], ['Durga Kund Temple', 'gopuram'], ['BHU Vishwanath Temple', 'gopuram'], ['Assi Ghat', 'houses'], ['Riverfront havelis', 'houses']],
+  'kharagpur': [['IIT Kharagpur Main Building', 'domedBasilica'], ['Hijli Shaheed Bhawan', 'domedBasilica'], ['Kharagpur Railway Station', 'houses'], ['Kharagpur Rail Museum', 'houses'], ['South Eastern Railway yards', 'skyline'], ['Gole Bazaar', 'houses']],
+  'kanpur': [['JK Temple', 'gopuram'], ['Kanpur Memorial Church', 'gothic'], ['Ganga Barrage', 'bridge'], ['Bithoor ghats', 'houses'], ['Moti Jheel', 'houses'], ['Phool Bagh', 'domedBasilica']],
+  'paris': [['Eiffel Tower', 'eiffel'], ['Notre-Dame', 'gothic'], ['Sacré-Cœur', 'domedBasilica'], ['Arc de Triomphe', 'archMonument'], ['Louvre Pyramid', 'pyramids'], ['Panthéon', 'domedBasilica'], ['Pont Alexandre III', 'bridge'], ['Tour Montparnasse', 'skyline'], ['Grande Roue', 'ferrisWheel'], ['Montmartre rooftops', 'houses']],
+  'london': [['Big Ben', 'clockTower'], ['London Eye', 'ferrisWheel'], ["St Paul's Cathedral", 'domedBasilica'], ['Tower Bridge', 'bridge'], ['Tower of London', 'castle'], ['Westminster Abbey', 'gothic'], ['The Shard', 'burj'], ['City skyline', 'skyline'], ["Nelson's Column", 'obelisk'], ['Terraced streets', 'houses']],
+  'rome': [['Colosseum', 'colosseum'], ["St Peter's Basilica", 'domedBasilica'], ['Pantheon', 'parthenon'], ["Castel Sant'Angelo", 'castle'], ['Roman Forum', 'parthenon'], ['Vatican obelisk', 'obelisk'], ["Ponte Sant'Angelo", 'bridge'], ['Vittoriano', 'parthenon'], ['Arch of Constantine', 'archMonument'], ['Trastevere rooftops', 'houses']],
+  'new york': [['Empire State Building', 'artDeco'], ['Statue of Liberty', 'liberty'], ['Brooklyn Bridge', 'bridge'], ['Chrysler Building', 'artDeco'], ['One World Trade Center', 'burj'], ['Flatiron Building', 'artDeco'], ['Midtown skyline', 'skyline'], ["St Patrick's Cathedral", 'gothic'], ['Wonder Wheel', 'ferrisWheel'], ['Brownstone rows', 'houses']],
+  'san francisco': [['Golden Gate Bridge', 'bridge'], ['Transamerica Pyramid', 'burj'], ['Coit Tower', 'observationTower'], ['Painted Ladies', 'houses'], ['Ferry Building', 'clockTower'], ['Salesforce Tower', 'burj'], ['Alcatraz Lighthouse', 'lighthouse'], ['Bay Bridge', 'bridge'], ['Palace of Fine Arts', 'parthenon'], ['Financial District', 'skyline']],
+  'dubai': [['Burj Khalifa', 'burj'], ['Burj Al Arab', 'operaHouse'], ['Jumeirah Mosque', 'mosque'], ['Dubai Frame', 'archMonument'], ['Emirates Towers', 'twinTowers'], ['Ain Dubai', 'ferrisWheel'], ['Al Fahidi Fort', 'castle'], ['Marina towers', 'skyline'], ['Creek wind-tower houses', 'houses'], ['Deira souk', 'houses']],
+  'istanbul': [['Hagia Sophia', 'mosque'], ['Blue Mosque', 'mosque'], ['Galata Tower', 'observationTower'], ['Topkapı Palace', 'castle'], ['Bosphorus Bridge', 'bridge'], ['Süleymaniye Mosque', 'mosque'], ["Maiden's Tower", 'lighthouse'], ['Dolmabahçe Clock Tower', 'clockTower'], ['Rumeli Fortress', 'castle'], ['Grand Bazaar domes', 'houses']],
+  'cairo': [['Pyramids of Giza', 'pyramids'], ['Cairo Tower', 'observationTower'], ['Al-Azhar Mosque', 'mosque'], ['Mosque of Muhammad Ali', 'mosque'], ['Bab Zuweila', 'archMonument'], ['Heliopolis Obelisk', 'obelisk'], ['Nile bridges', 'bridge'], ['Hanging Church', 'domedBasilica'], ['Khan el-Khalili', 'houses'], ['Islamic Cairo rooftops', 'houses']],
+  'barcelona': [['Sagrada Família', 'spires'], ['Barcelona Cathedral', 'gothic'], ['Casa Milà', 'houses'], ['Torre Glòries', 'burj'], ['Arc de Triomf', 'archMonument'], ['Montjuïc Castle', 'castle'], ['Columbus Monument', 'obelisk'], ['Tibidabo wheel', 'ferrisWheel'], ['Port Vell footbridge', 'bridge'], ['Eixample blocks', 'houses']],
+  'amsterdam': [['Canal houses', 'canalHouses'], ['Westerkerk', 'clockTower'], ['Rijksmuseum', 'gothic'], ['Magere Brug', 'bridge'], ['De Gooyer windmill', 'windmill'], ['Oude Kerk', 'gothic'], ["A'DAM Lookout", 'observationTower'], ['Centraal Station', 'gothic'], ['Munttoren', 'clockTower'], ['Houseboats', 'houses']],
+  'prague': [['Prague Castle', 'castle'], ['Charles Bridge', 'bridge'], ['Astronomical Clock', 'clockTower'], ['St Vitus Cathedral', 'gothic'], ['Týn Church', 'gothic'], ['Petřín Tower', 'eiffel'], ['Žižkov TV Tower', 'observationTower'], ['Powder Tower', 'clockTower'], ['Dancing House', 'houses'], ['Old Town roofs', 'houses']],
+  'sydney': [['Sydney Opera House', 'operaHouse'], ['Harbour Bridge', 'bridge'], ['Sydney Tower', 'observationTower'], ['Queen Victoria Building', 'domedBasilica'], ["St Mary's Cathedral", 'gothic'], ['Luna Park wheel', 'ferrisWheel'], ['Macquarie Lighthouse', 'lighthouse'], ['CBD skyline', 'skyline'], ['Anzac Memorial', 'archMonument'], ['Terrace houses', 'houses']],
+  'singapore': [['Marina Bay Sands', 'twinTowers'], ['Gardens by the Bay', 'spires'], ['Singapore Flyer', 'ferrisWheel'], ['Sultan Mosque', 'mosque'], ['Buddha Tooth Relic Temple', 'templeHall'], ['Sri Mariamman Temple', 'gopuram'], ['Helix Bridge', 'bridge'], ['Raffles Hotel', 'domedBasilica'], ['CBD skyline', 'skyline'], ['Shophouse rows', 'houses']],
+  'bangkok': [['Wat Arun', 'stupa'], ['Grand Palace', 'templeHall'], ['Wat Pho', 'stupa'], ['Golden Mount', 'stupa'], ['Baiyoke Tower', 'skyline'], ['Democracy Monument', 'archMonument'], ['Rama VIII Bridge', 'bridge'], ['Erawan Shrine', 'templeHall'], ['Chinatown shophouses', 'houses'], ['Chao Phraya piers', 'houses']],
+  'moscow': [["St Basil's Cathedral", 'onionChurch'], ['Kremlin towers', 'castle'], ['Christ the Saviour', 'domedBasilica'], ['Ostankino Tower', 'observationTower'], ['Moscow City towers', 'skyline'], ['Seven Sisters', 'artDeco'], ['Bolshoi Theatre', 'parthenon'], ['Novodevichy Convent', 'onionChurch'], ['Moskva bridges', 'bridge'], ['GUM arcades', 'houses']],
+  'rio de janeiro': [['Christ the Redeemer', 'redeemer'], ['Sugarloaf cable station', 'observationTower'], ['Metropolitan Cathedral', 'spires'], ['Copacabana towers', 'skyline'], ['Rio–Niterói Bridge', 'bridge'], ['Carioca Aqueduct', 'archMonument'], ['Municipal Theatre', 'domedBasilica'], ['Escadaria Selarón', 'houses'], ['Ferris wheel Yup Star', 'ferrisWheel'], ['Santa Teresa houses', 'houses']],
+  'athens': [['Parthenon', 'parthenon'], ['Temple of Olympian Zeus', 'parthenon'], ['Hadrian\u2019s Arch', 'archMonument'], ['Lycabettus chapel', 'domedBasilica'], ['Panathenaic Stadium', 'colosseum'], ['Metropolitan Cathedral', 'domedBasilica'], ['Tower of the Winds', 'clockTower'], ['Plaka rooftops', 'houses'], ['Piraeus lighthouse', 'lighthouse'], ['Monastiraki streets', 'houses']]
+};
+
+/* Generic type labels used when a city has no named set, or to top one up. */
+function genericOptions(traits) {
+  const order = traits.lm.concat(['houses', 'skyline', 'bridge', 'clockTower', 'observationTower', 'castle', 'domedBasilica', 'obelisk', 'lighthouse', 'ferrisWheel']);
+  const out = [];
+  for (const k of order) if (LM[k] && !out.some(o => o[1] === k)) out.push([LM[k].name, k]);
+  return out;
+}
+
+/* Guess which silhouette a Wikipedia article title wants. */
+function classifyTitle(title, cc) {
+  const t = ' ' + title.toLowerCase() + ' ';
+  const eastAsia = ['JP', 'CN', 'KR', 'TW', 'VN'].includes(cc);
+  const buddhist = ['TH', 'MM', 'LK', 'NP', 'KH', 'LA', 'BT'].includes(cc);
+  const rules = [
+    [/pagoda|-ji\b|dera\b|\bji temple/, 'pagoda'], [/torii|jingu|jinja|taisha/, 'torii'], [/stupa|chedi|dagoba|\bwat\b|pagoda/, 'stupa'],
+    [/gopuram|mandir|temple|shrine|devasthan|kovil|-in\b|monastery/, eastAsia ? 'templeHall' : buddhist ? 'stupa' : 'gopuram'],
+    [/mosque|masjid|dargah|jama|gurdwara|khanqah/, 'mosque'],
+    [/cathedral|basilica|church|minster|chapel|abbey|synagogue/, 'gothic'],
+    [/tomb|mausoleum|maqbara|rauza|samadhi/, 'taj'],
+    [/\bfort\b|fortress|qila|citadel|\bkot\b/, 'castle'],
+    [/palace|mahal|haveli|manor|\braj bhavan\b/, 'castle'],
+    [/bridge|setu|viaduct|aqueduct/, 'bridge'],
+    [/lighthouse/, 'lighthouse'],
+    [/\beye\b|ferris|observation wheel/, 'ferrisWheel'],
+    [/clock tower|clocktower|belfry|campanile/, 'clockTower'],
+    [/minar\b|minaret|column|obelisk|stambha|pillar/, 'obelisk'],
+    [/memorial|monument|smarak|cenotaph|statue/, 'obelisk'],
+    [/\bgate\b|gateway|darwaza|arch\b|torana/, 'archMonument'],
+    [/stadium|amphitheatre|amphitheater|arena|colosseum/, 'colosseum'],
+    [/\btower\b|skytree|spire/, 'observationTower'],
+    [/opera house|concert hall/, 'operaHouse'],
+    [/pyramid/, 'pyramids'], [/windmill/, 'windmill'],
+    [/museum|library|hall\b|bhavan|sabha|assembly|secretariat|university|college|institute|court/, 'domedBasilica'],
+    [/station|terminus|junction|airport/, 'houses'],
+    [/bazaar|market|ghat|street|bagh|chowk|square|quarter|old town/, 'houses'],
+    [/skyscraper|centre|center|plaza|complex|business district/, 'skyline']
+  ];
+  for (const [re, key] of rules) if (re.test(t)) return LM[key] ? key : null;
+  return null;
+}
 /* ============================================================
    THE COMPOSER
    Lays out one plate: paper, geometry, terrain, city, landmarks, type.
@@ -1568,7 +1649,7 @@ function buildPoster(cfg) {
     s += path(ridgePath(W, H, horizon + bandH * 0.02, bandH * 0.045, r, 1.2), P.mountains[0], 'opacity=".55"');
   }
 
-  /* distant landmark */
+  /* distant landmark — slot B, sits against the mountains */
   if (lms[1]) s += LM[lms[1]].fn(W * 0.665, skyBase, bandH * 0.34, P, r);
 
   /* mid-ground blocks */
@@ -1597,6 +1678,9 @@ function buildPoster(cfg) {
     s += rect(0, skyBase + bandH * 0.02, W, bandH * 0.07, P.water, 'opacity=".6"');
   }
 
+  /* right-edge landmark — slot E, mid depth */
+  if (lms[4]) s += LM[lms[4]].fn(W * 0.955, bandTop + bandH * 0.665, bandH * 0.235, P, r);
+
   /* town roofs */
   s += (function () {
     let t = '';
@@ -1614,7 +1698,10 @@ function buildPoster(cfg) {
   const vg = VEG[traits.veg] || VEG.broadleaf;
   for (let i = 0; i < 9; i++) s += vg(W * between(r, .02, .98), townBase + bandH * between(r, -.02, .03), bandH * between(r, .07, .12), P, r);
 
-  /* hero landmark */
+  /* mid landmark — slot D, standing among the roofs */
+  if (lms[3]) s += LM[lms[3]].fn(W * 0.475, bandTop + bandH * 0.775, bandH * 0.205, P, r);
+
+  /* hero landmark — slot A */
   if (lms[0]) s += LM[lms[0]].fn(W * 0.235, bandTop + bandH * 0.615, bandH * 0.455, P, r);
 
   /* foreground landmark */
@@ -1674,7 +1761,13 @@ const wrapSvg = (W, H, body) =>
   `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" shape-rendering="geometricPrecision">${body}</svg>`;
 
 /* ---------- OpenStreetMap streets ---------- */
-const OVERPASS = ['https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter', 'https://overpass.private.coffee/api/interpreter'];
+const OVERPASS = [
+  { url: '/api/overpass', how: 'proxy' },
+  { url: 'https://overpass-api.de/api/interpreter', how: 'direct' },
+  { url: 'https://overpass.kumi.systems/api/interpreter', how: 'direct' },
+  { url: 'https://overpass.private.coffee/api/interpreter', how: 'direct' },
+  { url: 'https://overpass.osm.jp/api/interpreter', how: 'direct' }
+];
 
 function overpassQuery(lat, lon, radiusKm) {
   const dLat = radiusKm / 111.32;
@@ -1683,12 +1776,12 @@ function overpassQuery(lat, lon, radiusKm) {
   let classes = 'motorway|trunk|primary|secondary|tertiary|unclassified|residential|living_street';
   if (radiusKm >= 7) classes = 'motorway|trunk|primary|secondary|tertiary|unclassified|residential';
   if (radiusKm >= 12) classes = 'motorway|trunk|primary|secondary|tertiary|unclassified';
-  return `[out:json][timeout:60];\n(\n  way["highway"~"^(${classes})$"](${bbox});\n  way["railway"~"^(rail|light_rail|subway|narrow_gauge)$"](${bbox});\n);\nout geom;`;
+  return `[out:json][timeout:45];\n(\n  way["highway"~"^(${classes})$"](${bbox});\n  way["railway"~"^(rail|light_rail|subway|narrow_gauge)$"](${bbox});\n);\nout geom;`;
 }
 
 /* Accepts Overpass raw JSON (out geom) or GeoJSON from overpass-turbo. */
 function parseRoadData(text) {
-  const j = JSON.parse(text);
+  const j = typeof text === 'string' ? JSON.parse(text) : text;
   const ways = [];
   if (Array.isArray(j.elements)) {
     for (const el of j.elements) {
@@ -1719,31 +1812,39 @@ function roadsExtentKm(ways, lat, lon) {
   return Math.max(0.5, m);
 }
 
+async function fetchWithTimeout(url, ms) {
+  const stop = new AbortController();
+  const timer = setTimeout(() => stop.abort(), ms);
+  try { return await fetch(url, { signal: stop.signal }); }
+  finally { clearTimeout(timer); }
+}
+
 async function fetchRoads(lat, lon, radiusKm) {
   const q = overpassQuery(lat, lon, radiusKm);
-  let lastErr;
-  for (const url of OVERPASS) {
+  const suffix = '?data=' + encodeURIComponent(q);
+  const tried = [];
+  for (const ep of OVERPASS) {
     try {
-      const res = await fetch(url, { method: 'POST', body: 'data=' + encodeURIComponent(q), headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
-      if (!res.ok) throw new Error('status ' + res.status);
-      const data = await res.json();
-      const ways = [];
-      for (const el of (data.elements || [])) {
-        if (!el.geometry || el.geometry.length < 2) continue;
-        const cls = el.tags && el.tags.railway ? 'rail' : (el.tags && el.tags.highway) || 'residential';
-        ways.push({ c: cls, p: el.geometry.map(g => [g.lat, g.lon]) });
-      }
-      return ways;
-    } catch (e) { lastErr = e; }
+      const res = await fetchWithTimeout(ep.url + suffix, ep.how === 'proxy' ? 58000 : 40000);
+      if (!res.ok) { tried.push(`${ep.how} ${res.status}`); continue; }
+      const ways = parseRoadData(await res.text());
+      if (!ways.length) { tried.push(`${ep.how} empty`); continue; }
+      return { ways, via: ep.how };
+    } catch (e) {
+      tried.push(`${ep.how} ${e.name === 'AbortError' ? 'timeout' : 'blocked'}`);
+    }
   }
-  throw lastErr || new Error('No map server responded.');
+  const err = new Error('No map server answered.');
+  err.tried = tried;
+  throw err;
 }
 
 /* ============================================================
    UI
    ============================================================ */
 const S = {
-  place: null, traits: null, lms: [], device: DEVICES[0], group: '9:16',
+  place: null, traits: null, options: [], allOptions: [], picked: [], optionSource: '',
+  showAll: false, device: DEVICES[0], group: '9:16',
   mapMode: 'off', radius: 4, roads: null, roadsKey: '', seed: 1,
   coords: true, grain: true, ascii: false, svg: '', busy: false
 };
@@ -1782,27 +1883,87 @@ function renderDevices() {
     .map(d => `<option value="${d.id}" ${d.id === S.device.id ? 'selected' : ''}>${d.label} — ${d.w}\u00D7${d.h}</option>`).join('');
 }
 
+async function wikiLandmarks(place) {
+  const url = 'https://en.wikipedia.org/w/api.php?action=query&list=geosearch' +
+    '&gscoord=' + place.lat + '%7C' + place.lon +
+    '&gsradius=10000&gslimit=50&format=json&origin=*';
+  const res = await fetchWithTimeout(url, 12000);
+  if (!res.ok) throw new Error('wiki ' + res.status);
+  const j = await res.json();
+  const hits = (j.query && j.query.geosearch) || [];
+  const out = [];
+  for (const h of hits) {
+    const k = classifyTitle(h.title, place.cc);
+    if (k && !out.some(o => o[0] === h.title)) out.push([h.title, k]);
+    if (out.length >= 10) break;
+  }
+  return out;
+}
+
+/* Ten options for the picked city, best source first. */
+async function buildOptions(place, traits) {
+  let list = NAMED[normalise(place.name)];
+  let source = list ? 'named' : '';
+  list = list ? list.slice() : [];
+  if (list.length < 10) {
+    try {
+      const wiki = await wikiLandmarks(place);
+      for (const w of wiki) {
+        if (list.length >= 10) break;
+        if (!list.some(x => x[0].toLowerCase() === w[0].toLowerCase())) list.push(w);
+      }
+      if (!source && wiki.length) source = 'wiki';
+    } catch (e) { /* offline or blocked — fall through to generic */ }
+  }
+  for (const g of genericOptions(traits)) {
+    if (list.length >= 10) break;
+    if (!list.some(x => x[1] === g[1])) list.push(g);
+  }
+  if (!source) source = 'generic';
+  return { source, options: list.slice(0, 10).map((x, i) => ({ id: 'o' + i, label: x[0], key: x[1] })) };
+}
+
 function renderChips() {
-  const keys = Object.keys(LM).sort((a, b) => LM[a].name.localeCompare(LM[b].name));
-  const ordered = S.traits ? S.traits.lm.concat(keys.filter(k => !S.traits.lm.includes(k))) : keys;
-  $('lmChips').innerHTML = ordered.map(k =>
-    `<button class="chip" data-k="${k}" aria-pressed="${S.lms.includes(k)}">${esc(LM[k].name)}</button>`).join('');
-  $('lmChips').querySelectorAll('.chip').forEach(b => b.onclick = () => {
-    const k = b.dataset.k, i = S.lms.indexOf(k);
-    if (i >= 0) S.lms.splice(i, 1);
-    else { if (S.lms.length >= 3) S.lms.shift(); S.lms.push(k); }
-    renderChips(); draw();
+  const opts = S.options || [];
+  const extras = S.showAll
+    ? Object.keys(LM).sort((a, b) => LM[a].name.localeCompare(LM[b].name))
+        .filter(k => !opts.some(o => o.key === k))
+        .map(k => ({ id: 'lib:' + k, label: LM[k].name, key: k }))
+    : [];
+  const all = opts.concat(extras);
+  S.allOptions = all;
+  $('lmChips').innerHTML = all.map(o => {
+    const i = S.picked.indexOf(o.id);
+    return '<button class="chip" data-id="' + o.id + '" aria-pressed="' + (i >= 0 ? 'true' : 'false') + '">' +
+      (i >= 0 ? '<b style="font-weight:600">' + (i + 1) + '</b> ' : '') + esc(o.label) + '</button>';
+  }).join('') +
+    '<button class="chip" id="showAllChip" aria-pressed="' + (S.showAll ? 'true' : 'false') + '">' +
+    (S.showAll ? 'Fewer shapes' : 'All silhouettes\u2026') + '</button>';
+
+  $('lmChips').querySelectorAll('.chip').forEach(b => {
+    if (b.id === 'showAllChip') { b.onclick = () => { S.showAll = !S.showAll; renderChips(); }; return; }
+    b.onclick = () => {
+      const id = b.dataset.id, i = S.picked.indexOf(id);
+      if (i >= 0) S.picked.splice(i, 1);
+      else { if (S.picked.length >= 5) S.picked.shift(); S.picked.push(id); }
+      renderChips(); draw();
+    };
   });
-  $('lmSub').textContent = S.traits && S.traits.source === 'city'
-    ? 'Chosen for this city. Swap any of them — up to three, drawn back to front.'
-    : 'No landmark set on file for this city, so these are typical for the region. Swap freely.';
+
+  const src = S.optionSource;
+  $('lmSub').textContent = S.picked.length + ' of 5 chosen. ' + (
+    src === 'named' ? 'The ten best-known landmarks here, drawn as silhouettes of their type.'
+      : src === 'wiki' ? 'The ten most prominent landmarks within 10 km, from Wikipedia.'
+        : 'No landmark list reached, so these are the shapes typical of the region.');
 }
 
 function draw() {
   if (!S.place) return;
   const d = S.device;
   const cfg = {
-    W: d.w, H: d.h, place: S.place, traits: S.traits, lms: S.lms, seed: S.seed,
+    W: d.w, H: d.h, place: S.place, traits: S.traits,
+    lms: S.picked.map(id => (S.allOptions.find(o => o.id === id) || {}).key).filter(Boolean),
+    seed: S.seed,
     roads: S.roads,
     opts: { coords: S.coords, grain: S.grain, mapMode: S.mapMode, radius: S.radius }
   };
@@ -1824,14 +1985,15 @@ async function ensureRoads() {
   $('mapNote').className = 'note';
   $('mapNote').innerHTML = '<span class="spin"></span>Pulling streets from OpenStreetMap…';
   try {
-    const ways = await fetchRoads(S.place.lat, S.place.lon, S.radius);
-    S.roads = ways; S.roadsKey = key;
+    const got = await fetchRoads(S.place.lat, S.place.lon, S.radius);
+    S.roads = got.ways; S.roadsKey = key;
     $('mapNote').className = 'note good';
-    $('mapNote').textContent = `${ways.length.toLocaleString()} street and rail segments drawn.`;
+    $('mapNote').textContent = `${got.ways.length.toLocaleString()} street and rail segments drawn` +
+      (got.via === 'proxy' ? ' through your own server.' : ' straight from Overpass.');
   } catch (e) {
     S.roads = null;
     $('mapNote').className = 'note bad';
-    $('mapNote').textContent = 'No answer from the map servers \u2014 a page opened straight from storage isn\'t allowed to make requests. Use the query and file loader below instead.';
+    $('mapNote').innerHTML = 'No map data came back (' + esc((e.tried || []).join(', ')) + '). Overpass is often just busy \u2014 wait a minute and retry, or pick a smaller area. The query and file loader below always work.';
   }
   draw();
 }
@@ -1908,10 +2070,14 @@ function useManual() {
   choose({ name, country: $('countryIn').value.trim(), cc: '', lat, lon, admin: '', pop: 0 }, null);
 }
 
-function choose(place, btn) {
+async function choose(place, btn) {
   S.place = place;
   S.traits = traitsFor(place);
-  S.lms = S.traits.lm.slice(0, 3);
+  S.options = S.traits.lm.slice(0, 5).map((k, i) => ({ id: 'o' + i, label: LM[k].name, key: k }));
+  S.allOptions = S.options.slice();
+  S.picked = S.options.map(o => o.id);
+  S.optionSource = 'generic';
+  S.showAll = false;
   S.seed = seedFrom(place.name + place.country + place.lat);
   S.roads = null; S.roadsKey = '';
   $('results').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
@@ -1920,6 +2086,15 @@ function choose(place, btn) {
   renderChips();
   refreshQuery();
   draw();
+  $('lmSub').textContent = 'Finding this city\u2019s landmarks\u2026';
+  buildOptions(place, S.traits).then(got => {
+    if (S.place !== place) return;
+    S.options = got.options;
+    S.optionSource = got.source;
+    S.picked = got.options.slice(0, 5).map(o => o.id);
+    renderChips();
+    draw();
+  });
   ensureRoads();
   if (window.innerWidth < 860) $('stageBody').scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
